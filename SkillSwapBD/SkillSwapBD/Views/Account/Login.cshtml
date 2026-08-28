@@ -1,0 +1,151 @@
+﻿@using SkillSwapBD.ViewModels
+@model LoginViewModel
+@{
+    ViewData["Title"] = "Login";
+}
+
+<style>
+    .auth-wrapper {
+        min-height: 75vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .auth-card {
+        width: 100%;
+        max-width: 420px;
+        background: #fff;
+        border-radius: 16px;
+        box-shadow: 0 10px 30px rgba(79, 70, 229, 0.12);
+        padding: 2.5rem 2rem;
+        border-top: 4px solid var(--ss-primary, #4F46E5);
+    }
+
+    .auth-icon {
+        width: 56px;
+        height: 56px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, var(--ss-primary, #4F46E5), var(--ss-accent, #14B8A6));
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 1rem;
+    }
+
+        .auth-icon svg {
+            width: 26px;
+            height: 26px;
+            fill: #fff;
+        }
+
+    .auth-title {
+        text-align: center;
+        font-weight: 700;
+        color: #1E293B;
+        margin-bottom: 0.25rem;
+    }
+
+    .auth-subtitle {
+        text-align: center;
+        color: #64748B;
+        font-size: 0.9rem;
+        margin-bottom: 1.75rem;
+    }
+
+    .auth-card .form-label {
+        font-weight: 600;
+        font-size: 0.85rem;
+        color: #334155;
+    }
+
+    .auth-card .form-control {
+        border-radius: 8px;
+        border: 1px solid #CBD5E1;
+        padding: 0.6rem 0.9rem;
+    }
+
+        .auth-card .form-control:focus {
+            border-color: var(--ss-primary, #4F46E5);
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.15);
+        }
+
+    .btn-auth {
+        background: linear-gradient(90deg, var(--ss-primary, #4F46E5), var(--ss-accent, #14B8A6));
+        border: none;
+        color: #fff;
+        font-weight: 600;
+        border-radius: 8px;
+        padding: 0.65rem 1rem;
+        width: 100%;
+        transition: opacity 0.2s ease;
+    }
+
+        .btn-auth:hover {
+            opacity: 0.9;
+            color: #fff;
+        }
+
+    .auth-footer {
+        text-align: center;
+        margin-top: 1.25rem;
+        font-size: 0.9rem;
+        color: #64748B;
+    }
+
+        .auth-footer a {
+            color: var(--ss-primary, #4F46E5);
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+            .auth-footer a:hover {
+                text-decoration: underline;
+            }
+</style>
+
+<div class="auth-wrapper">
+    <div class="auth-card">
+        <div class="auth-icon">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 12c2.7 0 4.9-2.2 4.9-4.9S14.7 2.2 12 2.2 7.1 4.4 7.1 7.1 9.3 12 12 12zm0 2.4c-3.3 0-9.8 1.6-9.8 4.9v2.5h19.6v-2.5c0-3.3-6.5-4.9-9.8-4.9z" />
+            </svg>
+        </div>
+        <h1 class="auth-title h4">Welcome back</h1>
+        <p class="auth-subtitle">Log in to continue swapping skills</p>
+
+        <form asp-action="Login" asp-route-returnUrl="@ViewData["ReturnUrl"]" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+            <div class="mb-3">
+                <label asp-for="Email" class="form-label"></label>
+                <input asp-for="Email" class="form-control" placeholder="you@example.com" />
+                <span asp-validation-for="Email" class="text-danger small"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Password" class="form-label"></label>
+                <input asp-for="Password" class="form-control" placeholder="••••••••" />
+                <span asp-validation-for="Password" class="text-danger small"></span>
+            </div>
+
+            <div class="mb-3 d-flex justify-content-between align-items-center">
+                <div class="form-check">
+                    <input asp-for="RememberMe" class="form-check-input" />
+                    <label asp-for="RememberMe" class="form-check-label small"></label>
+                </div>
+                <a asp-action="ForgotPassword" class="small text-decoration-none">Forgot password?</a>
+            </div>
+
+            <button type="submit" class="btn btn-auth">Login</button>
+        </form>
+
+        <p class="auth-footer">
+            Don't have an account? <a asp-action="Register">Create one</a>
+        </p>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

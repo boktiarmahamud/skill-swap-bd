@@ -29,6 +29,7 @@ namespace SkillSwapBD.Data
                     Email = "admin@skillswapbd.com",
                     EmailConfirmed = true,
                     FullName = "Admin",
+                    IsApproved = true,
                     CreatedAt = DateTime.UtcNow
                 };
                 await userManager.CreateAsync(admin, "Admin@123");
