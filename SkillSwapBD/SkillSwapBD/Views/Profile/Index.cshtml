@@ -1,0 +1,108 @@
+﻿@using SkillSwapBD
+@using SkillSwapBD.Models
+@using SkillSwapBD.ViewModels
+@using static SkillSwapBD.Models.Enums
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@model ApplicationUser
+@{
+    ViewData["Title"] = Model.FullName;
+    var skills = (List<Skill>)ViewBag.Skills;
+    var reviews = (List<Review>)ViewBag.Reviews;
+    var offering = skills.Count(s => s.Type == SkillType.Offer);
+    var wanted = skills.Count(s => s.Type == SkillType.Want);
+}
+
+<link rel="stylesheet" href="~/css/profile.css" asp-append-version="true" />
+
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-4 mb-4">
+            <div class="profile-card">
+                <div class="profile-cover" style="@(!string.IsNullOrEmpty(Model.CoverImageUrl) ? $"background-image:url('{Model.CoverImageUrl}');background-size:cover;background-position:center;" : "")"></div>
+                <div class="p-4 text-center">
+                    <div class="profile-avatar-wrap">
+                        @if (!string.IsNullOrEmpty(Model.ProfileImageUrl))
+                        {
+                            <img src="@Model.ProfileImageUrl" class="profile-avatar" alt="Profile photo" />
+                        }
+                        else
+                        {
+                            <div class="avatar-circle">@Model.FullName.Substring(0, 1).ToUpper()</div>
+                        }
+                    </div>
+
+                    <h4 class="profile-name mt-3">@Model.FullName</h4>
+                    <p class="profile-location mb-2">📍 @Model.Location</p>
+
+                    <div class="profile-stats">
+                        <div>
+                            <span class="profile-stat-value" data-rating="@ViewBag.AverageRating"></span>
+                            <span class="profile-stat-label">Rating</span>
+                        </div>
+                        <div>
+                            <span class="profile-stat-value">@reviews.Count</span>
+                            <span class="profile-stat-label">Reviews</span>
+                        </div>
+                        <div>
+                            <span class="profile-stat-value">@skills.Count</span>
+                            <span class="profile-stat-label">Skills</span>
+                        </div>
+                    </div>
+
+                    <p class="profile-bio">@Model.Bio</p>
+
+                    @if ((bool)ViewBag.IsOwnProfile)
+                    {
+                        <a class="btn btn-edit-profile btn-sm mt-2" asp-action="Edit">Edit Profile</a>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-8">
+            <div class="mb-4">
+                <h5 class="section-heading">🛠️ Skills <span class="text-muted fw-normal small">(@offering offering &middot; @wanted wanted)</span></h5>
+                <div class="row g-3">
+                    @foreach (var skill in skills)
+                    {
+                        <div class="col-md-6">
+                            <div class="skill-card">
+                                <span class="skill-badge @(skill.Type == SkillType.Offer ? "bg-success text-white" : "bg-warning text-dark")">
+                                    @(skill.Type == SkillType.Offer ? "Offering" : "Wanted")
+                                </span>
+                                <strong class="skill-title">@skill.Title</strong>
+                                <span class="skill-category">@skill.Category?.Name</span>
+                            </div>
+                        </div>
+                    }
+                </div>
+                @if (!skills.Any())
+                {
+                    <p class="empty-state mt-2">No skills posted yet.</p>
+                }
+            </div>
+
+            <div>
+                <h5 class="section-heading">💬 Reviews</h5>
+                @foreach (var review in reviews)
+                {
+                    <div class="review-card">
+                        <div class="review-header">
+                            <span class="review-name">@review.Reviewer?.FullName</span>
+                            <span class="review-stars" data-rating="@review.Rating"></span>
+                        </div>
+                        <p class="review-comment">@review.Comment</p>
+                    </div>
+                }
+                @if (!reviews.Any())
+                {
+                    <p class="empty-state">No reviews yet.</p>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/profile.js"></script>
+}

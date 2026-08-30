@@ -1,0 +1,51 @@
+﻿@using SkillSwapBD.ViewModels
+@model ProfileEditViewModel
+@{
+    ViewData["Title"] = "Edit Profile";
+}
+
+<div class="container py-4" style="max-width: 560px;">
+    <h1 class="mb-4">Edit Profile</h1>
+
+    <form asp-action="Edit" method="post" enctype="multipart/form-data">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+        <div class="mb-3 text-center">
+            @if (!string.IsNullOrEmpty(Model.ExistingCoverImageUrl))
+            {
+                <img src="@Model.ExistingCoverImageUrl" class="mb-2 rounded" style="width:100%;height:120px;object-fit:cover;" alt="Current cover" />
+            }
+            <label asp-for="CoverImage" class="form-label d-block">Cover Photo</label>
+            <input asp-for="CoverImage" type="file" class="form-control" accept=".jpg,.jpeg,.png,.webp" />
+            <small class="text-muted">JPG, PNG or WEBP, max 3MB. Recommended wide/banner-shaped image.</small>
+        </div>
+
+        <div class="mb-3 text-center">
+            @if (!string.IsNullOrEmpty(Model.ExistingImageUrl))
+            {
+                <img src="@Model.ExistingImageUrl" class="rounded-circle mb-2" style="width:100px;height:100px;object-fit:cover;" alt="Current photo" />
+            }
+            <label asp-for="ProfileImage" class="form-label d-block">Profile Photo</label>
+            <input asp-for="ProfileImage" type="file" class="form-control" accept=".jpg,.jpeg,.png,.webp" />
+            <small class="text-muted">JPG, PNG or WEBP, max 2MB.</small>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="FullName" class="form-label"></label>
+            <input asp-for="FullName" class="form-control" />
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Location" class="form-label"></label>
+            <input asp-for="Location" class="form-control" placeholder="e.g. Dhaka" />
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Bio" class="form-label"></label>
+            <textarea asp-for="Bio" class="form-control" rows="4"></textarea>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Save Changes</button>
+        <a asp-action="Index" class="btn btn-link">Cancel</a>
+    </form>
+</div>

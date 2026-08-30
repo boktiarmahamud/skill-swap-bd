@@ -7,6 +7,8 @@ namespace SkillSwapBD.Models
         public string FullName { get; set; }
         public string? Bio { get; set; }
         public string? Location { get; set; }
+        public string? ProfileImageUrl { get; set; }
+        public string? CoverImageUrl { get; set; }
         public bool IsApproved { get; set; } = false;
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public bool IsRejected { get; set; } = false;
