@@ -24,6 +24,7 @@ namespace SkillSwapBD.Controllers
             ViewBag.UserCount = await _context.Users.CountAsync();
             ViewBag.SkillCount = await _context.Skills.CountAsync();
             ViewBag.PendingCount = await _context.Users.CountAsync(u => !u.IsApproved);
+            ViewBag.PendingSkillCount = await _context.Skills.CountAsync(s => !s.IsApproved); 
             return View();
         }
 
@@ -65,6 +66,38 @@ namespace SkillSwapBD.Controllers
 
             TempData["Success"] = $"{user.FullName} has been rejected.";
             return RedirectToAction(nameof(PendingUsers));
+        }
+
+        public async Task<IActionResult> PendingSkills()
+        {
+            var pending = await _context.Skills
+                .Include(s => s.Category).Include(s => s.User)
+                .Where(s => !s.IsApproved)
+                .OrderBy(s => s.CreatedAt)
+                .ToListAsync();
+            return View(pending);
+        }
+
+        [HttpPost, ValidateAntiForgeryToken]
+        public async Task<IActionResult> ApproveSkill(int id)
+        {
+            var skill = await _context.Skills.FindAsync(id);
+            if (skill == null) return NotFound();
+            skill.IsApproved = true;
+            await _context.SaveChangesAsync();
+            TempData["Success"] = "Skill approved and is now live.";
+            return RedirectToAction(nameof(PendingSkills));
+        }
+
+        [HttpPost, ValidateAntiForgeryToken]
+        public async Task<IActionResult> RejectSkill(int id)
+        {
+            var skill = await _context.Skills.FindAsync(id);
+            if (skill == null) return NotFound();
+            _context.Skills.Remove(skill);
+            await _context.SaveChangesAsync();
+            TempData["Success"] = "Skill rejected and removed.";
+            return RedirectToAction(nameof(PendingSkills));
         }
     }
 }

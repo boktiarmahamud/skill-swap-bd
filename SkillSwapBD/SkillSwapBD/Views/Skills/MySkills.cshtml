@@ -1,0 +1,47 @@
+﻿@using static SkillSwapBD.Models.Enums
+@model List<Skill>
+@{
+    ViewData["Title"] = "My Skills";
+}
+
+<div class="container py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1>My Skills</h1>
+        <a class="btn btn-primary" asp-action="Create">+ Post a Skill</a>
+    </div>
+
+    @if (!Model.Any())
+    {
+        <p class="text-muted">You haven't posted any skills yet.</p>
+    }
+
+    <div class="row g-4">
+        @foreach (var skill in Model)
+        {
+            <div class="col-md-4">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <span class="badge @(skill.Type == SkillType.Offer ? "bg-success" : "bg-warning text-dark")">
+                            @(skill.Type == SkillType.Offer ? "Offering" : "Wanted")
+                        </span>
+                        @if (skill.IsApproved)
+                        {
+                            <span class="badge bg-primary">Live</span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-secondary">Pending Approval</span>
+                        }
+                        <h5 class="card-title mt-2">@skill.Title</h5>
+                        <p class="text-muted small">@skill.Category?.Name &middot; ❤️ @skill.Likes.Count</p>
+                        <p>@skill.Description</p>
+                    </div>
+                    <div class="card-footer bg-transparent d-flex gap-2">
+                        <a class="btn btn-sm btn-outline-secondary" asp-action="Edit" asp-route-id="@skill.Id">Edit</a>
+                        <a class="btn btn-sm btn-outline-danger" asp-action="Delete" asp-route-id="@skill.Id">Delete</a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>

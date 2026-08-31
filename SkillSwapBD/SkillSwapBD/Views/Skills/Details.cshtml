@@ -1,0 +1,54 @@
+﻿@model Skill
+@{
+    ViewData["Title"] = Model.Title;
+}
+@{
+    ViewData["Title"] = Model.Title;
+}
+<div class="card mt-4 p-3">
+    <form asp-action="ToggleLike" method="post">
+        <input type="hidden" name="skillId" value="@Model.Id" />
+        <button type="submit" class="btn @(ViewBag.HasLiked ? "btn-danger" : "btn-outline-danger") btn-sm">
+            ❤️ @(ViewBag.HasLiked ? "Liked" : "Like") (@ViewBag.LikeCount)
+        </button>
+    </form>
+</div>
+
+<div class="mt-4">
+    <h5>Comments (@Model.Comments.Count(c => c.ParentCommentId == null))</h5>
+
+    @if (User.Identity != null && User.Identity.IsAuthenticated)
+    {
+        <form asp-action="AddComment" method="post" class="mb-3">
+            <input type="hidden" name="skillId" value="@Model.Id" />
+            <textarea name="content" class="form-control mb-2" rows="2" placeholder="Write a comment..."></textarea>
+            <button type="submit" class="btn btn-sm btn-primary">Post Comment</button>
+        </form>
+    }
+
+    @foreach (var comment in Model.Comments.Where(c => c.ParentCommentId == null).OrderBy(c => c.CreatedAt))
+    {
+        <div class="card p-2 mb-2">
+            <strong>@comment.User?.FullName</strong>
+            <p class="mb-1">@comment.Content</p>
+
+            @foreach (var reply in comment.Replies.OrderBy(r => r.CreatedAt))
+            {
+                <div class="card p-2 mb-1 ms-4 bg-light">
+                    <strong>@reply.User?.FullName</strong>
+                    <p class="mb-0">@reply.Content</p>
+                </div>
+            }
+
+            @if (User.Identity != null && User.Identity.IsAuthenticated)
+            {
+                <form asp-action="AddComment" method="post" class="mt-1 ms-4">
+                    <input type="hidden" name="skillId" value="@Model.Id" />
+                    <input type="hidden" name="parentCommentId" value="@comment.Id" />
+                    <input type="text" name="content" class="form-control form-control-sm mb-1" placeholder="Reply..." />
+                    <button type="submit" class="btn btn-sm btn-outline-secondary">Reply</button>
+                </form>
+            }
+        </div>
+    }
+</div>

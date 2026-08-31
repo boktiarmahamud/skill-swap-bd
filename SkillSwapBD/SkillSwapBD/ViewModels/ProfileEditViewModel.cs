@@ -8,6 +8,7 @@
         public string? ExistingImageUrl { get; set; }
         public IFormFile? ProfileImage { get; set; }
         public string? ExistingCoverImageUrl { get; set; }   
-        public IFormFile? CoverImage { get; set; }            
+        public IFormFile? CoverImage { get; set; }
+        
     }
 }

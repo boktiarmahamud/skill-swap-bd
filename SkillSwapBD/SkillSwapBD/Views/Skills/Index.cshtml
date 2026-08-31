@@ -1,0 +1,54 @@
+﻿@using SkillSwapBD.ViewModels
+@using static SkillSwapBD.Models.Enums
+@model SkillListViewModel
+@{
+    ViewData["Title"] = "Browse Skills";
+}
+
+<div class="container py-4">
+    <h1 class="mb-4">Browse Skills</h1>
+
+    <form method="get" class="row g-2 mb-4">
+        <div class="col-md-4">
+            <input type="text" name="searchTerm" value="@Model.SearchTerm" class="form-control" placeholder="Search..." />
+        </div>
+        <div class="col-md-3">
+            <select name="categoryId" class="form-select" asp-items="@(new SelectList(Model.Categories, "Id", "Name", Model.CategoryId))">
+                <option value="">All categories</option>
+            </select>
+        </div>
+        <div class="col-md-3">
+            <select name="type" class="form-select" asp-items="Html.GetEnumSelectList<SkillType>()">
+                <option value="">Offering &amp; Wanted</option>
+            </select>
+        </div>
+        <div class="col-md-2">
+            <button type="submit" class="btn btn-primary w-100">Filter</button>
+        </div>
+    </form>
+
+    <div class="row g-4">
+        @foreach (var skill in Model.Skills)
+        {
+            <div class="col-md-4">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <span class="badge @(skill.Type == SkillType.Offer ? "bg-success" : "bg-warning text-dark")">
+                            @(skill.Type == SkillType.Offer ? "Offering" : "Wanted")
+                        </span>
+                        <h5 class="card-title mt-2">@skill.Title</h5>
+                        <p class="text-muted small">@skill.Category?.Name &middot; by @skill.User?.FullName</p>
+                        <p>@skill.Description</p>
+                    </div>
+                    <div class="card-footer bg-transparent">
+                        <a class="btn btn-sm btn-outline-primary" asp-action="Details" asp-route-id="@skill.Id">View details</a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+    @if (!Model.Skills.Any())
+    {
+        <p class="text-muted mt-4">No skills matched your search.</p>
+    }
+</div>

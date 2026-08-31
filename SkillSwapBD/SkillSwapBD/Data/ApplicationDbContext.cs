@@ -14,6 +14,8 @@ namespace SkillSwapBD.Data
         public DbSet<Skill> Skills { get; set; }
         public DbSet<SwapRequest> SwapRequests { get; set; }
         public DbSet<Review> Reviews { get; set; }
+        public DbSet<SkillLike> SkillLikes { get; set; }
+        public DbSet<SkillComment> SkillComments { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -40,6 +42,19 @@ namespace SkillSwapBD.Data
             builder.Entity<Review>().HasOne(r => r.SwapRequest).WithMany(sr => sr.Reviews)
                 .HasForeignKey(r => r.SwapRequestId).OnDelete(DeleteBehavior.Cascade);
             builder.Entity<Review>().HasIndex(r => new { r.SwapRequestId, r.ReviewerId }).IsUnique();
+
+            builder.Entity<SkillLike>().HasOne(l => l.Skill).WithMany(s => s.Likes)
+                .HasForeignKey(l => l.SkillId).OnDelete(DeleteBehavior.Cascade);
+            builder.Entity<SkillLike>().HasOne(l => l.User).WithMany()
+                .HasForeignKey(l => l.UserId).OnDelete(DeleteBehavior.Restrict);
+            builder.Entity<SkillLike>().HasIndex(l => new { l.SkillId, l.UserId }).IsUnique(); 
+
+            builder.Entity<SkillComment>().HasOne(c => c.Skill).WithMany(s => s.Comments)
+                .HasForeignKey(c => c.SkillId).OnDelete(DeleteBehavior.Cascade);
+            builder.Entity<SkillComment>().HasOne(c => c.User).WithMany()
+                .HasForeignKey(c => c.UserId).OnDelete(DeleteBehavior.Restrict);
+            builder.Entity<SkillComment>().HasOne(c => c.ParentComment).WithMany(c => c.Replies)
+                .HasForeignKey(c => c.ParentCommentId).OnDelete(DeleteBehavior.Restrict);
 
             builder.Entity<Category>().HasData(
                 new Category { Id = 1, Name = "Programming & IT" },

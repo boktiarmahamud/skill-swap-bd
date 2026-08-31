@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SkillSwapBD.Data;
 
@@ -11,9 +12,11 @@ using SkillSwapBD.Data;
 namespace SkillSwapBD.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260831191950_AddSkillApprovalLikesComments")]
+    partial class AddSkillApprovalLikesComments
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -349,9 +352,6 @@ namespace SkillSwapBD.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("IsApproved")
-                        .HasColumnType("bit");
-
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -370,70 +370,6 @@ namespace SkillSwapBD.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Skills");
-                });
-
-            modelBuilder.Entity("SkillSwapBD.Models.SkillComment", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Content")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int?>("ParentCommentId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("SkillId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ParentCommentId");
-
-                    b.HasIndex("SkillId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("SkillComments");
-                });
-
-            modelBuilder.Entity("SkillSwapBD.Models.SkillLike", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("SkillId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.HasIndex("SkillId", "UserId")
-                        .IsUnique();
-
-                    b.ToTable("SkillLikes");
                 });
 
             modelBuilder.Entity("SkillSwapBD.Models.SwapRequest", b =>
@@ -580,51 +516,6 @@ namespace SkillSwapBD.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("SkillSwapBD.Models.SkillComment", b =>
-                {
-                    b.HasOne("SkillSwapBD.Models.SkillComment", "ParentComment")
-                        .WithMany("Replies")
-                        .HasForeignKey("ParentCommentId")
-                        .OnDelete(DeleteBehavior.Restrict);
-
-                    b.HasOne("SkillSwapBD.Models.Skill", "Skill")
-                        .WithMany("Comments")
-                        .HasForeignKey("SkillId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("SkillSwapBD.Models.ApplicationUser", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("ParentComment");
-
-                    b.Navigation("Skill");
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("SkillSwapBD.Models.SkillLike", b =>
-                {
-                    b.HasOne("SkillSwapBD.Models.Skill", "Skill")
-                        .WithMany("Likes")
-                        .HasForeignKey("SkillId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("SkillSwapBD.Models.ApplicationUser", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Skill");
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("SkillSwapBD.Models.SwapRequest", b =>
                 {
                     b.HasOne("SkillSwapBD.Models.ApplicationUser", "Receiver")
@@ -668,18 +559,6 @@ namespace SkillSwapBD.Migrations
             modelBuilder.Entity("SkillSwapBD.Models.Category", b =>
                 {
                     b.Navigation("Skills");
-                });
-
-            modelBuilder.Entity("SkillSwapBD.Models.Skill", b =>
-                {
-                    b.Navigation("Comments");
-
-                    b.Navigation("Likes");
-                });
-
-            modelBuilder.Entity("SkillSwapBD.Models.SkillComment", b =>
-                {
-                    b.Navigation("Replies");
                 });
 
             modelBuilder.Entity("SkillSwapBD.Models.SwapRequest", b =>
