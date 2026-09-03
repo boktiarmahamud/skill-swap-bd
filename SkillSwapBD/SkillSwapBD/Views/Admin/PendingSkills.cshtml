@@ -1,0 +1,32 @@
+﻿@using static SkillSwapBD.Models.Enums
+@model List<Skill>
+@{
+    ViewData["Title"] = "Pending Skills";
+}
+
+<div class="container py-4">
+    <h1 class="mb-4">Pending Skill Posts</h1>
+    @if (!Model.Any())
+    {
+        <p class="text-muted">No skills waiting for approval.</p>
+    }
+    @foreach (var skill in Model)
+    {
+        <div class="card p-3 mb-2">
+            <span class="badge @(skill.Type == SkillType.Offer ? "bg-success" : "bg-warning text-dark")" style="width:fit-content;">
+                @(skill.Type == SkillType.Offer ? "Offering" : "Wanted")
+            </span>
+            <strong class="mt-1">@skill.Title</strong> &middot; <span class="text-muted">@skill.Category?.Name</span>
+            <p>@skill.Description</p>
+            <p class="text-muted small">By @skill.User?.FullName</p>
+            <div class="d-flex gap-2">
+                <form asp-action="ApproveSkill" asp-route-id="@skill.Id" method="post">
+                    <button type="submit" class="btn btn-success btn-sm">Approve</button>
+                </form>
+                <form asp-action="RejectSkill" asp-route-id="@skill.Id" method="post">
+                    <button type="submit" class="btn btn-outline-danger btn-sm">Reject</button>
+                </form>
+            </div>
+        </div>
+    }
+</div>

@@ -1,0 +1,19 @@
+﻿@model ApplicationUser
+@{
+    ViewData["Title"] = Model.FullName;
+}
+
+<div class="container py-5 text-center">
+    <div class="card p-4 mx-auto" style="max-width: 400px;">
+        @if (!string.IsNullOrEmpty(Model.ProfileImageUrl))
+        {
+            <img src="@Model.ProfileImageUrl" class="rounded-circle mx-auto mb-3" style="width:80px;height:80px;object-fit:cover;" alt="Profile photo" />
+        }
+        else
+        {
+            <div class="avatar-circle mx-auto mb-3">@Model.FullName.Substring(0, 1)</div>
+        }
+        <h5>@Model.FullName</h5>
+        <p class="text-muted">This profile is pending admin approval. Full details will be visible once approved.</p>
+    </div>
+</div>

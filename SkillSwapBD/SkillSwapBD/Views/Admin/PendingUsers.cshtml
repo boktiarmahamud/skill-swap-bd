@@ -1,0 +1,29 @@
+﻿@model List<ApplicationUser>
+@{
+    ViewData["Title"] = "Pending Users";
+}
+
+<div class="container py-4">
+    <h1 class="mb-4">Pending Users</h1>
+
+    @if (!Model.Any())
+    {
+        <p class="text-muted">No users waiting for approval.</p>
+    }
+
+    @foreach (var user in Model)
+    {
+        <div>
+            <strong>@user.FullName</strong> &middot; @user.Email
+            <div class="text-muted small">Registered @user.CreatedAt.ToString("MMM d, yyyy")</div>
+        </div>
+        <div class="d-flex gap-2">
+            <form asp-action="Approve" asp-route-id="@user.Id" method="post">
+                <button type="submit" class="btn btn-success btn-sm">Approve</button>
+            </form>
+            <form asp-action="Reject" asp-route-id="@user.Id" method="post">
+                <button type="submit" class="btn btn-outline-danger btn-sm">Reject</button>
+            </form>
+        </div>
+    }
+</div>

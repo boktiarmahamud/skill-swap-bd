@@ -1,0 +1,172 @@
+﻿@using SkillSwapBD.ViewModels
+@model RegisterViewModel
+@{
+    ViewData["Title"] = "Register";
+}
+
+<style>
+    .auth-wrapper {
+        min-height: 75vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .auth-card {
+        width: 100%;
+        max-width: 460px;
+        background: #fff;
+        border-radius: 16px;
+        box-shadow: 0 10px 30px rgba(79, 70, 229, 0.12);
+        padding: 2.5rem 2rem;
+        border-top: 4px solid var(--ss-primary, #4F46E5);
+    }
+
+    .auth-icon {
+        width: 56px;
+        height: 56px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, var(--ss-primary, #4F46E5), var(--ss-accent, #14B8A6));
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 1rem;
+    }
+
+        .auth-icon svg {
+            width: 26px;
+            height: 26px;
+            fill: #fff;
+        }
+
+    .auth-title {
+        text-align: center;
+        font-weight: 700;
+        color: #1E293B;
+        margin-bottom: 0.25rem;
+    }
+
+    .auth-subtitle {
+        text-align: center;
+        color: #64748B;
+        font-size: 0.9rem;
+        margin-bottom: 1.75rem;
+    }
+
+    .auth-card .form-label {
+        font-weight: 600;
+        font-size: 0.85rem;
+        color: #334155;
+    }
+
+    .auth-card .form-control {
+        border-radius: 8px;
+        border: 1px solid #CBD5E1;
+        padding: 0.6rem 0.9rem;
+    }
+
+        .auth-card .form-control:focus {
+            border-color: var(--ss-primary, #4F46E5);
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.15);
+        }
+
+    .auth-card .text-danger {
+        font-size: 0.8rem;
+    }
+
+    .btn-auth {
+        background: linear-gradient(90deg, var(--ss-primary, #4F46E5), var(--ss-accent, #14B8A6));
+        border: none;
+        color: #fff;
+        font-weight: 600;
+        border-radius: 8px;
+        padding: 0.65rem 1rem;
+        width: 100%;
+        transition: opacity 0.2s ease;
+    }
+
+        .btn-auth:hover {
+            opacity: 0.9;
+            color: #fff;
+        }
+
+    .auth-footer {
+        text-align: center;
+        margin-top: 1.25rem;
+        font-size: 0.9rem;
+        color: #64748B;
+    }
+
+        .auth-footer a {
+            color: var(--ss-primary, #4F46E5);
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+            .auth-footer a:hover {
+                text-decoration: underline;
+            }
+
+    .row-2 {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 0.75rem;
+    }
+
+    @@media (max-width: 480px) {
+        .row-2 {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+
+<div class="auth-wrapper">
+    <div class="auth-card">
+        <div class="auth-icon">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M15 12c2.2 0 4-1.8 4-4s-1.8-4-4-4-4 1.8-4 4 1.8 4 4 4zm-6.5 1c-2.5 0-4.5 2-4.5 4.5V19h9v-1.5c0-2.5-2-4.5-4.5-4.5zM15 14c-.3 0-.6 0-1 .1 1.2.9 2 2.3 2 3.9V19h5v-1.5c0-2.5-3.1-3.5-6-3.5z" />
+            </svg>
+        </div>
+        <h1 class="auth-title h4">Join SkillSwapBD</h1>
+        <p class="auth-subtitle">Create an account and start swapping skills</p>
+
+        <form asp-action="Register" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+            <div class="mb-3">
+                <label asp-for="FullName" class="form-label"></label>
+                <input asp-for="FullName" class="form-control" placeholder="Your full name" />
+                <span asp-validation-for="FullName" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Email" class="form-label"></label>
+                <input asp-for="Email" class="form-control" placeholder="you@example.com" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+
+            <div class="row-2 mb-3">
+                <div>
+                    <label asp-for="Password" class="form-label"></label>
+                    <input asp-for="Password" class="form-control" placeholder="••••••••" />
+                    <span asp-validation-for="Password" class="text-danger"></span>
+                </div>
+                <div>
+                    <label asp-for="ConfirmPassword" class="form-label"></label>
+                    <input asp-for="ConfirmPassword" class="form-control" placeholder="••••••••" />
+                    <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-auth">Register</button>
+        </form>
+
+        <p class="auth-footer">
+            Already have an account? <a asp-action="Login">Log in</a>
+        </p>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

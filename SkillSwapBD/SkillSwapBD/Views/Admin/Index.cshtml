@@ -1,0 +1,38 @@
+﻿@{
+    ViewData["Title"] = "Admin Dashboard";
+}
+
+<div class="container py-4">
+    <h1 class="mb-4">Admin Dashboard</h1>
+    <div class="row g-3 mb-4">
+        <div class="col-md-3">
+            <div class="card p-3 text-center">
+                <h3>@ViewBag.UserCount</h3>
+                <p class="text-muted mb-0">Total Users</p>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card p-3 text-center">
+                <h3>@ViewBag.SkillCount</h3>
+                <p class="text-muted mb-0">Skill Posts</p>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card p-3 text-center">
+                <h3>@ViewBag.PendingCount</h3>
+                <p class="text-muted mb-0">Pending User Approvals</p>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card p-3 text-center">
+                <h3>@ViewBag.PendingSkillCount</h3>
+                <p class="text-muted mb-0">Pending Skill Approvals</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="d-flex gap-2">
+        <a class="btn btn-primary" asp-action="PendingUsers">Review Pending Users</a>
+        <a class="btn btn-outline-primary" asp-action="PendingSkills">Review Pending Skills</a>
+    </div>
+</div>
