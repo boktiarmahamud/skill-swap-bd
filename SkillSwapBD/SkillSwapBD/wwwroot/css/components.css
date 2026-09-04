@@ -1,0 +1,174 @@
+﻿
+.form-card {
+    max-width: 640px;
+    margin: 0 auto;
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(79, 70, 229, 0.12);
+    padding: 2.5rem 2rem;
+    border-top: 4px solid var(--ss-primary, #4F46E5);
+}
+
+.form-card-icon {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--ss-primary, #4F46E5), var(--ss-accent, #14B8A6));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1rem;
+}
+
+    .form-card-icon svg {
+        width: 26px;
+        height: 26px;
+        fill: #fff;
+    }
+
+.form-card-title {
+    text-align: center;
+    font-weight: 700;
+    color: #1E293B;
+    margin-bottom: 0.25rem;
+}
+
+.form-card-subtitle {
+    text-align: center;
+    color: #64748B;
+    font-size: 0.9rem;
+    margin-bottom: 1.75rem;
+}
+
+.form-card .form-label {
+    font-weight: 600;
+    font-size: 0.85rem;
+    color: #334155;
+}
+
+.form-card .form-control,
+.form-card .form-select {
+    border-radius: 8px;
+    border: 1px solid #CBD5E1;
+    padding: 0.6rem 0.9rem;
+}
+
+    .form-card .form-control:focus,
+    .form-card .form-select:focus {
+        border-color: var(--ss-primary, #4F46E5);
+        box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.15);
+    }
+
+.form-card .text-danger {
+    font-size: 0.8rem;
+}
+
+.file-drop-hint {
+    border: 1.5px dashed #CBD5E1;
+    border-radius: 8px;
+    padding: 0.75rem;
+    background: #F8FAFC;
+    font-size: 0.8rem;
+    color: #64748B;
+    margin-top: 0.5rem;
+}
+
+.btn-publish {
+    background: linear-gradient(90deg, var(--ss-primary, #4F46E5), var(--ss-accent, #14B8A6));
+    border: none;
+    color: #fff;
+    font-weight: 600;
+    border-radius: 8px;
+    padding: 0.65rem 1.5rem;
+    transition: opacity 0.2s ease;
+}
+
+    .btn-publish:hover {
+        opacity: 0.9;
+        color: #fff;
+    }
+
+.btn-cancel-link {
+    color: #64748B;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+    .btn-cancel-link:hover {
+        color: #334155;
+        text-decoration: underline;
+    }
+
+
+/* Danger variant for delete/confirm pages */
+.form-card.form-card-danger {
+    border-top-color: #DC2626;
+}
+
+.form-card-icon.icon-danger {
+    background: linear-gradient(135deg, #DC2626, #F87171);
+}
+
+.confirm-preview {
+    border: 1px solid #FEE2E2;
+    background: #FEF2F2;
+    border-radius: 12px;
+    padding: 1rem 1.25rem;
+    margin-bottom: 1.5rem;
+}
+
+    .confirm-preview h5 {
+        color: #1E293B;
+        font-weight: 700;
+        margin-bottom: 0.25rem;
+    }
+
+    .confirm-preview .category-tag {
+        color: #94A3B8;
+        font-size: 0.8rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .confirm-preview p:last-child {
+        color: #475569;
+        font-size: 0.9rem;
+        margin-bottom: 0;
+    }
+
+.btn-confirm-delete {
+    background: #DC2626;
+    border: none;
+    color: #fff;
+    font-weight: 600;
+    border-radius: 8px;
+    padding: 0.6rem 1.5rem;
+    transition: opacity 0.2s ease;
+}
+
+    .btn-confirm-delete:hover {
+        opacity: 0.9;
+        color: #fff;
+    }
+
+.current-file-box {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: #F8FAFC;
+    border: 1px solid #E2E8F0;
+    border-radius: 8px;
+    padding: 0.6rem 0.9rem;
+    margin-bottom: 0.6rem;
+    font-size: 0.85rem;
+    color: #475569;
+}
+
+    .current-file-box a {
+        color: var(--ss-primary, #4F46E5);
+        font-weight: 600;
+        text-decoration: none;
+    }
+
+        .current-file-box a:hover {
+            text-decoration: underline;
+        }

@@ -13,11 +13,13 @@ namespace SkillSwapBD.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly IWebHostEnvironment _env;
 
-        public SkillsController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
+        public SkillsController(ApplicationDbContext context, UserManager<ApplicationUser> userManager, IWebHostEnvironment env)
         {
             _context = context;
             _userManager = userManager;
+            _env = env;
         }
 
         // Public browse — only approved skills
@@ -51,6 +53,8 @@ namespace SkillSwapBD.Controllers
                 .Include(s => s.Likes)
                 .Include(s => s.Comments.Where(c => c.ParentCommentId == null))
                     .ThenInclude(c => c.User)
+                .Include(s => s.Comments)
+                    .ThenInclude(c => c.Likes)               
                 .Include(s => s.Comments)
                     .ThenInclude(c => c.Replies)
                         .ThenInclude(r => r.User)
@@ -114,9 +118,23 @@ namespace SkillSwapBD.Controllers
                 Type = vm.Type,
                 CategoryId = vm.CategoryId,
                 UserId = user.Id,
-                IsApproved = false,   // every new post starts pending
+                IsApproved = false,
                 CreatedAt = DateTime.UtcNow
             };
+
+            // Attachment is optional
+            if (vm.Attachment != null && vm.Attachment.Length > 0)
+            {
+                var (url, type, error) = await SaveAttachment(vm.Attachment, user.Id);
+                if (error != null)
+                {
+                    ModelState.AddModelError(string.Empty, error);
+                    vm.Categories = await _context.Categories.OrderBy(c => c.Name).ToListAsync();
+                    return View(vm);
+                }
+                skill.AttachmentUrl = url;
+                skill.AttachmentType = type;
+            }
 
             _context.Skills.Add(skill);
             await _context.SaveChangesAsync();
@@ -139,6 +157,7 @@ namespace SkillSwapBD.Controllers
                 Description = skill.Description,
                 Type = skill.Type,
                 CategoryId = skill.CategoryId,
+                ExistingAttachmentUrl = skill.AttachmentUrl,
                 Categories = await _context.Categories.OrderBy(c => c.Name).ToListAsync()
             };
             return View(vm);
@@ -162,12 +181,56 @@ namespace SkillSwapBD.Controllers
             skill.Description = vm.Description;
             skill.Type = vm.Type;
             skill.CategoryId = vm.CategoryId;
-            skill.IsApproved = false; // re-approval needed after edit
+            skill.IsApproved = false;
+
+            if (vm.Attachment != null && vm.Attachment.Length > 0)
+            {
+                var (url, type, error) = await SaveAttachment(vm.Attachment, skill.UserId);
+                if (error != null)
+                {
+                    ModelState.AddModelError(string.Empty, error);
+                    vm.Categories = await _context.Categories.OrderBy(c => c.Name).ToListAsync();
+                    return View(vm);
+                }
+                skill.AttachmentUrl = url;
+                skill.AttachmentType = type;
+            }
 
             await _context.SaveChangesAsync();
             TempData["Success"] = "Skill updated — pending re-approval.";
             return RedirectToAction(nameof(MySkills));
         }
+
+        // Helper: saves image or document, returns (url, type, errorMessage)
+        private async Task<(string? url, string? type, string? error)> SaveAttachment(IFormFile file, string userId)
+        {
+            var imageExtensions = new[] { ".jpg", ".jpeg", ".png", ".webp" };
+            var docExtensions = new[] { ".pdf", ".doc", ".docx" };
+            var ext = Path.GetExtension(file.FileName).ToLowerInvariant();
+
+            bool isImage = imageExtensions.Contains(ext);
+            bool isDoc = docExtensions.Contains(ext);
+
+            if (!isImage && !isDoc)
+                return (null, null, "Only images (JPG/PNG/WEBP) or documents (PDF/DOC/DOCX) are allowed.");
+
+            if (file.Length > 5 * 1024 * 1024) // 5MB
+                return (null, null, "File must be smaller than 5MB.");
+
+            var folder = Path.Combine(_env.WebRootPath, "uploads", "skills");
+            Directory.CreateDirectory(folder);
+
+            var fileName = $"{Guid.NewGuid()}{ext}";
+            var filePath = Path.Combine(folder, fileName);
+
+            using (var stream = new FileStream(filePath, FileMode.Create))
+            {
+                await file.CopyToAsync(stream);
+            }
+
+            return ($"/uploads/skills/{fileName}", isImage ? "image" : "document", null);
+        }
+
 
         [Authorize]
         public async Task<IActionResult> Delete(int id)
@@ -189,6 +252,25 @@ namespace SkillSwapBD.Controllers
             await _context.SaveChangesAsync();
             TempData["Success"] = "Skill post deleted.";
             return RedirectToAction(nameof(MySkills));
+        }
+
+
+
+        // ---------- Comment Likes ----------
+        [HttpPost, Authorize, ValidateAntiForgeryToken]
+        public async Task<IActionResult> ToggleCommentLike(int commentId, int skillId)
+        {
+            var userId = _userManager.GetUserId(User)!;
+            var existing = await _context.CommentLikes
+                .FirstOrDefaultAsync(cl => cl.SkillCommentId == commentId && cl.UserId == userId);
+
+            if (existing != null)
+                _context.CommentLikes.Remove(existing);
+            else
+                _context.CommentLikes.Add(new CommentLike { SkillCommentId = commentId, UserId = userId });
+
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Details), new { id = skillId });
         }
 
         // ---------- Likes ----------

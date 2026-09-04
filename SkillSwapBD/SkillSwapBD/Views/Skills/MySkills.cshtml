@@ -4,41 +4,47 @@
     ViewData["Title"] = "My Skills";
 }
 
+<link rel="stylesheet" href="~/css/my-skills.css" asp-append-version="true" />
+
 <div class="container py-4">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1>My Skills</h1>
-        <a class="btn btn-primary" asp-action="Create">+ Post a Skill</a>
+    <div class="page-header">
+        <h1 class="page-title h3">My Skills</h1>
+        <a class="btn-post-skill" asp-action="Create">+ Post a Skill</a>
     </div>
 
     @if (!Model.Any())
     {
-        <p class="text-muted">You haven't posted any skills yet.</p>
+        <div class="empty-skills-box">
+            <p class="mb-0">You haven't posted any skills yet. Click <strong>"+ Post a Skill"</strong> to get started.</p>
+        </div>
     }
 
     <div class="row g-4">
         @foreach (var skill in Model)
         {
             <div class="col-md-4">
-                <div class="card h-100">
-                    <div class="card-body">
-                        <span class="badge @(skill.Type == SkillType.Offer ? "bg-success" : "bg-warning text-dark")">
-                            @(skill.Type == SkillType.Offer ? "Offering" : "Wanted")
-                        </span>
-                        @if (skill.IsApproved)
-                        {
-                            <span class="badge bg-primary">Live</span>
-                        }
-                        else
-                        {
-                            <span class="badge bg-secondary">Pending Approval</span>
-                        }
-                        <h5 class="card-title mt-2">@skill.Title</h5>
-                        <p class="text-muted small">@skill.Category?.Name &middot; ❤️ @skill.Likes.Count</p>
-                        <p>@skill.Description</p>
+                <div class="my-skill-card">
+                    <div class="my-skill-body">
+                        <div class="badge-row">
+                            <span class="type-badge @(skill.Type == SkillType.Offer ? "bg-success text-white" : "bg-warning text-dark")">
+                                @(skill.Type == SkillType.Offer ? "Offering" : "Wanted")
+                            </span>
+                            @if (skill.IsApproved)
+                            {
+                                <span class="status-badge status-live">● Live</span>
+                            }
+                            else
+                            {
+                                <span class="status-badge status-pending">Pending Approval</span>
+                            }
+                        </div>
+                        <h5 class="my-skill-title">@skill.Title</h5>
+                        <p class="my-skill-meta">@skill.Category?.Name &middot; ❤️ @skill.Likes.Count</p>
+                        <p class="my-skill-desc">@skill.Description</p>
                     </div>
-                    <div class="card-footer bg-transparent d-flex gap-2">
-                        <a class="btn btn-sm btn-outline-secondary" asp-action="Edit" asp-route-id="@skill.Id">Edit</a>
-                        <a class="btn btn-sm btn-outline-danger" asp-action="Delete" asp-route-id="@skill.Id">Delete</a>
+                    <div class="my-skill-footer">
+                        <a class="btn-edit-sm" asp-action="Edit" asp-route-id="@skill.Id">Edit</a>
+                        <a class="btn-delete-sm" asp-action="Delete" asp-route-id="@skill.Id">Delete</a>
                     </div>
                 </div>
             </div>

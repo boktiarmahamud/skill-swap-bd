@@ -5,42 +5,61 @@
     ViewData["Title"] = "Post a Skill";
 }
 
-<div class="container py-4" style="max-width: 640px;">
-    <h1 class="mb-4">Post a Skill</h1>
+<link rel="stylesheet" href="~/css/components.css" asp-append-version="true" />
 
-    <form asp-action="Create" method="post">
-        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-
-        <div class="mb-3">
-            <label asp-for="Type" class="form-label"></label>
-            <select asp-for="Type" class="form-select" asp-items="Html.GetEnumSelectList<SkillType>()"></select>
+<div class="container py-4">
+    <div class="form-card">
+        <div class="form-card-icon">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
+            </svg>
         </div>
+        <h1 class="form-card-title h4">Post a Skill</h1>
+        <p class="form-card-subtitle">Share what you can teach or what you're looking to learn</p>
 
-        <div class="mb-3">
-            <label asp-for="Title" class="form-label"></label>
-            <input asp-for="Title" class="form-control" placeholder="e.g. Guitar Lessons for Beginners" />
-            <span asp-validation-for="Title" class="text-danger"></span>
-        </div>
+        <form asp-action="Create" method="post" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
 
-        <div class="mb-3">
-            <label asp-for="Description" class="form-label"></label>
-            <textarea asp-for="Description" class="form-control" rows="4"></textarea>
-            <span asp-validation-for="Description" class="text-danger"></span>
-        </div>
+            <div class="mb-3">
+                <label asp-for="Type" class="form-label"></label>
+                <select asp-for="Type" class="form-select" asp-items="Html.GetEnumSelectList<SkillType>()"></select>
+            </div>
 
-        <div class="mb-3">
-            <label asp-for="CategoryId" class="form-label"></label>
-            <select asp-for="CategoryId" class="form-select" asp-items="@(new SelectList(Model.Categories, "Id", "Name"))">
-                <option value="">Select a category</option>
-            </select>
-            <span asp-validation-for="CategoryId" class="text-danger"></span>
-        </div>
+            <div class="mb-3">
+                <label asp-for="Title" class="form-label"></label>
+                <input asp-for="Title" class="form-control" placeholder="e.g. Guitar Lessons for Beginners" />
+                <span asp-validation-for="Title" class="text-danger"></span>
+            </div>
 
-        <button type="submit" class="btn btn-primary">Publish</button>
-        <a asp-action="MySkills" class="btn btn-link">Cancel</a>
-    </form>
+            <div class="mb-3">
+                <label asp-for="Description" class="form-label"></label>
+                <textarea asp-for="Description" class="form-control" rows="4" placeholder="Describe what you're offering or looking for..."></textarea>
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="CategoryId" class="form-label"></label>
+                <select asp-for="CategoryId" class="form-select" asp-items="@(new SelectList(Model.Categories, "Id", "Name"))">
+                    <option value="">Select a category</option>
+                </select>
+                <span asp-validation-for="CategoryId" class="text-danger"></span>
+            </div>
+
+            <div class="mb-4">
+                <label class="form-label">Photo or Document (optional)</label>
+                <input asp-for="Attachment" type="file" class="form-control" accept=".jpg,.jpeg,.png,.webp,.pdf,.doc,.docx" />
+                <div class="file-drop-hint">📎 JPG, PNG, WEBP, PDF, or DOC — max 5MB.</div>
+            </div>
+
+            <div class="d-flex align-items-center gap-3">
+                <button type="submit" class="btn btn-publish">Publish</button>
+                <a asp-action="MySkills" class="btn-cancel-link">Cancel</a>
+            </div>
+        </form>
+    </div>
 </div>
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+    <script src="~/js/skill-form.js"></script>
 }

@@ -3,18 +3,29 @@
     ViewData["Title"] = "Delete Skill";
 }
 
-<div class="container py-4" style="max-width: 640px;">
-    <h1 class="mb-4 text-danger">Delete Skill</h1>
-    <p>Are you sure you want to delete this skill post?</p>
+<link rel="stylesheet" href="~/css/components.css" asp-append-version="true" />
 
-    <div class="card p-3 mb-3">
-        <h5>@Model.Title</h5>
-        <p class="text-muted mb-0">@Model.Category?.Name</p>
-        <p>@Model.Description</p>
+<div class="container py-4">
+    <div class="form-card form-card-danger">
+        <div class="form-card-icon icon-danger">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M6 7h12M9 7V4h6v3m-8 0v13a1 1 0 001 1h8a1 1 0 001-1V7" stroke="#fff" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+        </div>
+        <h1 class="form-card-title h4 text-danger">Delete Skill</h1>
+        <p class="form-card-subtitle">This action can't be undone. Are you sure you want to delete this post?</p>
+
+        <div class="confirm-preview">
+            <h5>@Model.Title</h5>
+            <p class="category-tag">@Model.Category?.Name</p>
+            <p>@Model.Description</p>
+        </div>
+
+        <form asp-action="Delete" asp-route-id="@Model.Id" method="post">
+            <div class="d-flex align-items-center gap-3">
+                <button type="submit" class="btn btn-confirm-delete">Yes, Delete</button>
+                <a asp-action="MySkills" class="btn-cancel-link">Cancel</a>
+            </div>
+        </form>
     </div>
-
-    <form asp-action="Delete" asp-route-id="@Model.Id" method="post">
-        <button type="submit" class="btn btn-danger">Yes, Delete</button>
-        <a asp-action="MySkills" class="btn btn-link">Cancel</a>
-    </form>
 </div>

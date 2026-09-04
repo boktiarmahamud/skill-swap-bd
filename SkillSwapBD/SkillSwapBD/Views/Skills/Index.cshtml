@@ -5,12 +5,16 @@
     ViewData["Title"] = "Browse Skills";
 }
 
-<div class="container py-4">
-    <h1 class="mb-4">Browse Skills</h1>
+<link rel="stylesheet" href="~/css/browse-skills.css" asp-append-version="true" />
 
-    <form method="get" class="row g-2 mb-4">
+<div class="container py-4">
+    <div class="browse-header">
+        <h1 class="browse-title h3">Browse Skills</h1>
+    </div>
+
+    <form method="get" class="filter-bar row g-2">
         <div class="col-md-4">
-            <input type="text" name="searchTerm" value="@Model.SearchTerm" class="form-control" placeholder="Search..." />
+            <input type="text" name="searchTerm" value="@Model.SearchTerm" class="form-control" placeholder="🔍 Search skills..." />
         </div>
         <div class="col-md-3">
             <select name="categoryId" class="form-select" asp-items="@(new SelectList(Model.Categories, "Id", "Name", Model.CategoryId))">
@@ -23,7 +27,7 @@
             </select>
         </div>
         <div class="col-md-2">
-            <button type="submit" class="btn btn-primary w-100">Filter</button>
+            <button type="submit" class="btn btn-filter">Filter</button>
         </div>
     </form>
 
@@ -31,24 +35,27 @@
         @foreach (var skill in Model.Skills)
         {
             <div class="col-md-4">
-                <div class="card h-100">
-                    <div class="card-body">
-                        <span class="badge @(skill.Type == SkillType.Offer ? "bg-success" : "bg-warning text-dark")">
+                <div class="browse-card">
+                    <div class="browse-card-body">
+                        <span class="type-badge @(skill.Type == SkillType.Offer ? "bg-success text-white" : "bg-warning text-dark")">
                             @(skill.Type == SkillType.Offer ? "Offering" : "Wanted")
                         </span>
-                        <h5 class="card-title mt-2">@skill.Title</h5>
-                        <p class="text-muted small">@skill.Category?.Name &middot; by @skill.User?.FullName</p>
-                        <p>@skill.Description</p>
+                        <h5 class="browse-card-title">@skill.Title</h5>
+                        <p class="browse-card-meta">@skill.Category?.Name &middot; by @skill.User?.FullName</p>
+                        <p class="browse-card-desc">@skill.Description</p>
                     </div>
-                    <div class="card-footer bg-transparent">
-                        <a class="btn btn-sm btn-outline-primary" asp-action="Details" asp-route-id="@skill.Id">View details</a>
+                    <div class="browse-card-footer">
+                        <a class="btn-view-details" asp-action="Details" asp-route-id="@skill.Id">View details</a>
                     </div>
                 </div>
             </div>
         }
     </div>
+
     @if (!Model.Skills.Any())
     {
-        <p class="text-muted mt-4">No skills matched your search.</p>
+        <div class="empty-browse-box">
+            <p class="mb-0">No skills matched your search. Try adjusting your filters.</p>
+        </div>
     }
 </div>

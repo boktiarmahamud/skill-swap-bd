@@ -4,40 +4,49 @@
     ViewData["Title"] = "Home";
 }
 
+<link rel="stylesheet" href="~/css/home.css" asp-append-version="true" />
+<link rel="stylesheet" href="~/css/browse-skills.css" asp-append-version="true" />
+
 <div class="container py-4">
-    <div class="text-center mb-5">
-        <h1>Skill Swap BD</h1>
-        <p class="text-muted">Trade skills with others instead of paying money.</p>
-        <div class="d-flex justify-content-center gap-2">
-            <a class="btn btn-primary" asp-controller="Skills" asp-action="Index">Browse Skills</a>
-            <a class="btn btn-outline-primary" asp-controller="Skills" asp-action="Create">+ Post a Skill</a>
+    <div class="hero-section">
+        <h1 class="hero-title">Skill Swap BD</h1>
+        <p class="hero-subtitle">Trade skills with others instead of paying money.</p>
+        <div class="hero-actions">
+            <a class="btn-hero-primary" asp-controller="Skills" asp-action="Index">Browse Skills</a>
+            <a class="btn-hero-secondary" asp-controller="Skills" asp-action="Create">+ Post a Skill</a>
         </div>
-        <p class="text-muted mt-2 small">@ViewBag.SkillCount skills posted &middot; @ViewBag.UserCount approved members</p>
+        <div class="hero-stats">
+            <span class="hero-stat">🛠️ <strong>@ViewBag.SkillCount</strong> skills posted</span>
+            <span class="hero-stat">👥 <strong>@ViewBag.UserCount</strong> approved members</span>
+        </div>
     </div>
 
-    <h4 class="mb-3">Recently Posted</h4>
+    <h4 class="section-label">✨ Recently Posted</h4>
     <div class="row g-4">
         @foreach (var skill in Model)
         {
             <div class="col-md-4">
-                <div class="card h-100">
-                    <div class="card-body">
-                        <span class="badge @(skill.Type == SkillType.Offer ? "bg-success" : "bg-warning text-dark")">
+                <div class="browse-card">
+                    <div class="browse-card-body">
+                        <span class="type-badge @(skill.Type == SkillType.Offer ? "bg-success text-white" : "bg-warning text-dark")">
                             @(skill.Type == SkillType.Offer ? "Offering" : "Wanted")
                         </span>
-                        <h5 class="card-title mt-2">@skill.Title</h5>
-                        <p class="text-muted small">@skill.Category?.Name &middot; by @skill.User?.FullName</p>
-                        <p>@skill.Description</p>
+                        <h5 class="browse-card-title">@skill.Title</h5>
+                        <p class="browse-card-meta">@skill.Category?.Name &middot; by @skill.User?.FullName</p>
+                        <p class="browse-card-desc">@skill.Description</p>
                     </div>
-                    <div class="card-footer bg-transparent">
-                        <a class="btn btn-sm btn-outline-primary" asp-controller="Skills" asp-action="Details" asp-route-id="@skill.Id">View Details</a>
+                    <div class="browse-card-footer">
+                        <a class="btn-view-details" asp-controller="Skills" asp-action="Details" asp-route-id="@skill.Id">View Details</a>
                     </div>
                 </div>
             </div>
         }
     </div>
+
     @if (!Model.Any())
     {
-        <p class="text-muted">No skills posted yet — be the first!</p>
+        <div class="empty-browse-box">
+            <p class="mb-0">No skills posted yet — be the first!</p>
+        </div>
     }
 </div>

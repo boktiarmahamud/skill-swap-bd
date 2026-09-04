@@ -1,54 +1,154 @@
-﻿@model Skill
+﻿@using static SkillSwapBD.Models.Enums
+@model Skill
 @{
     ViewData["Title"] = Model.Title;
 }
-@{
-    ViewData["Title"] = Model.Title;
-}
-<div class="card mt-4 p-3">
-    <form asp-action="ToggleLike" method="post">
-        <input type="hidden" name="skillId" value="@Model.Id" />
-        <button type="submit" class="btn @(ViewBag.HasLiked ? "btn-danger" : "btn-outline-danger") btn-sm">
-            ❤️ @(ViewBag.HasLiked ? "Liked" : "Like") (@ViewBag.LikeCount)
-        </button>
-    </form>
-</div>
 
-<div class="mt-4">
-    <h5>Comments (@Model.Comments.Count(c => c.ParentCommentId == null))</h5>
+<link rel="stylesheet" href="~/css/skill-detail.css" asp-append-version="true" />
 
-    @if (User.Identity != null && User.Identity.IsAuthenticated)
-    {
-        <form asp-action="AddComment" method="post" class="mb-3">
-            <input type="hidden" name="skillId" value="@Model.Id" />
-            <textarea name="content" class="form-control mb-2" rows="2" placeholder="Write a comment..."></textarea>
-            <button type="submit" class="btn btn-sm btn-primary">Post Comment</button>
-        </form>
-    }
-
-    @foreach (var comment in Model.Comments.Where(c => c.ParentCommentId == null).OrderBy(c => c.CreatedAt))
-    {
-        <div class="card p-2 mb-2">
-            <strong>@comment.User?.FullName</strong>
-            <p class="mb-1">@comment.Content</p>
-
-            @foreach (var reply in comment.Replies.OrderBy(r => r.CreatedAt))
+<div class="container py-4" style="max-width: 700px;">
+    <div class="post-card mb-3">
+        <div class="post-author-row">
+            @if (!string.IsNullOrEmpty(Model.User?.ProfileImageUrl))
             {
-                <div class="card p-2 mb-1 ms-4 bg-light">
-                    <strong>@reply.User?.FullName</strong>
-                    <p class="mb-0">@reply.Content</p>
+                <img src="@Model.User.ProfileImageUrl" class="post-author-avatar me-2" style="width:45px;height:45px;" />
+            }
+            else
+            {
+                <div class="avatar-circle me-2 d-flex align-items-center justify-content-center text-white fw-bold" style="width:45px;height:45px;background:linear-gradient(135deg, var(--ss-primary, #4F46E5), var(--ss-accent, #14B8A6));">
+                    @Model.User?.FullName.Substring(0, 1)
                 </div>
             }
-
-            @if (User.Identity != null && User.Identity.IsAuthenticated)
-            {
-                <form asp-action="AddComment" method="post" class="mt-1 ms-4">
-                    <input type="hidden" name="skillId" value="@Model.Id" />
-                    <input type="hidden" name="parentCommentId" value="@comment.Id" />
-                    <input type="text" name="content" class="form-control form-control-sm mb-1" placeholder="Reply..." />
-                    <button type="submit" class="btn btn-sm btn-outline-secondary">Reply</button>
-                </form>
-            }
+            <div>
+                <a asp-controller="Profile" asp-action="Index" asp-route-id="@Model.UserId" class="post-author-name d-block">
+                    @Model.User?.FullName
+                </a>
+                <div class="post-meta">@Model.CreatedAt.ToString("MMM d, yyyy 'at' h:mm tt")</div>
+            </div>
         </div>
-    }
+
+        <span class="post-badge @(Model.Type == SkillType.Offer ? "bg-success text-white" : "bg-warning text-dark")">
+            @(Model.Type == SkillType.Offer ? "Offering" : "Wanted")
+        </span>
+        <h5 class="post-title">@Model.Title</h5>
+        <p class="post-category">@Model.Category?.Name</p>
+        <p class="post-description">@Model.Description</p>
+
+        @if (!string.IsNullOrEmpty(Model.AttachmentUrl))
+        {
+            <div class="post-attachment mt-2">
+                @if (Model.AttachmentType == "image")
+                {
+                    <img src="@Model.AttachmentUrl" class="img-fluid" alt="Attachment" />
+                }
+                else
+                {
+                    <a href="@Model.AttachmentUrl" target="_blank" class="btn btn-outline-secondary btn-sm">📄 View Attached Document</a>
+                }
+            </div>
+        }
+
+        @if (User.Identity != null && User.Identity.IsAuthenticated && User.Identity.Name != Model.User?.UserName)
+        {
+            <a class="btn btn-swap-request btn-sm mt-3" asp-controller="SwapRequests" asp-action="Create" asp-route-receiverSkillId="@Model.Id">Request Swap</a>
+        }
+
+        <div class="post-divider"></div>
+        <div class="d-flex gap-3">
+            <form asp-action="ToggleLike" method="post">
+                <input type="hidden" name="skillId" value="@Model.Id" />
+                <button type="submit" class="btn btn-like @(ViewBag.HasLiked ? "liked" : "")">
+                    👍 @(ViewBag.HasLiked ? "Liked" : "Like") &middot; @ViewBag.LikeCount
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <div class="comments-card">
+        <h6 class="comments-heading">@Model.Comments.Count(c => c.ParentCommentId == null) Comments</h6>
+
+        @if (User.Identity != null && User.Identity.IsAuthenticated)
+        {
+            <form asp-action="AddComment" method="post" class="comment-form d-flex gap-2 mb-4">
+                <input type="hidden" name="skillId" value="@Model.Id" />
+                <input type="text" name="content" class="form-control form-control-sm" placeholder="Write a comment..." />
+                <button type="submit" class="btn btn-sm btn-post">Post</button>
+            </form>
+        }
+
+        @foreach (var comment in Model.Comments.Where(c => c.ParentCommentId == null).OrderByDescending(c => c.CreatedAt))
+        {
+            <div class="d-flex mb-3">
+                @if (!string.IsNullOrEmpty(comment.User?.ProfileImageUrl))
+                {
+                    <img src="@comment.User.ProfileImageUrl" class="post-author-avatar me-2" style="width:32px;height:32px;" />
+                }
+                else
+                {
+                    <div class="avatar-circle me-2 d-flex align-items-center justify-content-center text-white fw-bold" style="width:32px;height:32px;font-size:0.85rem;background:linear-gradient(135deg, var(--ss-primary, #4F46E5), var(--ss-accent, #14B8A6));">
+                        @comment.User?.FullName.Substring(0, 1)
+                    </div>
+                }
+                <div class="flex-grow-1">
+                    <div class="comment-bubble">
+                        <a asp-controller="Profile" asp-action="Index" asp-route-id="@comment.UserId" class="comment-author small fw-bold text-dark text-decoration-none">
+                            @comment.User?.FullName
+                        </a>
+                        <p class="mb-0 small comment-text">@comment.Content</p>
+                    </div>
+                    <div class="d-flex gap-2 mt-1 align-items-center comment-actions">
+                        <form asp-action="ToggleCommentLike" method="post" class="d-inline">
+                            <input type="hidden" name="commentId" value="@comment.Id" />
+                            <input type="hidden" name="skillId" value="@Model.Id" />
+                            <button type="submit" class="btn btn-link btn-sm btn-comment-like text-decoration-none">
+                                👍 Like @(comment.Likes.Any() ? $"({comment.Likes.Count})" : "")
+                            </button>
+                        </form>
+                        <span>&middot; @comment.CreatedAt.ToString("MMM d, h:mm tt")</span>
+                    </div>
+
+                    @foreach (var reply in comment.Replies.OrderBy(r => r.CreatedAt))
+                    {
+                        <div class="d-flex mt-2 ms-3">
+                            @if (!string.IsNullOrEmpty(reply.User?.ProfileImageUrl))
+                            {
+                                <img src="@reply.User.ProfileImageUrl" class="post-author-avatar me-2" style="width:28px;height:28px;" />
+                            }
+                            else
+                            {
+                                <div class="avatar-circle me-2 d-flex align-items-center justify-content-center text-white fw-bold" style="width:28px;height:28px;font-size:0.75rem;background:linear-gradient(135deg, var(--ss-primary, #4F46E5), var(--ss-accent, #14B8A6));">
+                                    @reply.User?.FullName.Substring(0, 1)
+                                </div>
+                            }
+                            <div class="comment-bubble flex-grow-1">
+                                <a asp-controller="Profile" asp-action="Index" asp-route-id="@reply.UserId" class="comment-author small fw-bold text-dark text-decoration-none">
+                                    @reply.User?.FullName
+                                </a>
+                                <p class="mb-0 small comment-text">@reply.Content</p>
+                            </div>
+                        </div>
+                    }
+
+                    @if (User.Identity != null && User.Identity.IsAuthenticated)
+                    {
+                        <form asp-action="AddComment" method="post" class="reply-form d-flex gap-2 mt-2 ms-3">
+                            <input type="hidden" name="skillId" value="@Model.Id" />
+                            <input type="hidden" name="parentCommentId" value="@comment.Id" />
+                            <input type="text" name="content" class="form-control form-control-sm" placeholder="Reply..." />
+                            <button type="submit" class="btn btn-sm btn-outline-secondary">Reply</button>
+                        </form>
+                    }
+                </div>
+            </div>
+        }
+
+        @if (!Model.Comments.Any())
+        {
+            <p class="empty-comments">No comments yet. Be the first!</p>
+        }
+    </div>
 </div>
+
+@section Scripts {
+    <script src="~/js/skill-detail.js"></script>
+}
