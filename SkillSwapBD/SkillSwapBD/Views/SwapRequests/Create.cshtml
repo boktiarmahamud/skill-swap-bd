@@ -1,0 +1,39 @@
+﻿@using Microsoft.AspNetCore.Mvc.Rendering
+@using SkillSwapBD.ViewModels
+@model SwapRequestCreateViewModel
+@{
+    ViewData["Title"] = "Request a Swap";
+}
+
+<div class="container py-4" style="max-width: 640px;">
+    <h1 class="mb-2">Request a Swap</h1>
+    <p class="text-muted">
+        You're requesting <strong>@Model.ReceiverSkill?.Title</strong> from
+        <strong>@Model.ReceiverSkill?.User?.FullName</strong>.
+    </p>
+
+    <form asp-action="Create" method="post">
+        <input type="hidden" asp-for="ReceiverSkillId" />
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+        <div class="mb-3">
+            <label asp-for="RequesterSkillId" class="form-label"></label>
+            <select asp-for="RequesterSkillId" class="form-select" asp-items="@(new SelectList(Model.MyOfferSkills, "Id", "Title"))">
+                <option value="">Choose a skill you can offer</option>
+            </select>
+            <span asp-validation-for="RequesterSkillId" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Message" class="form-label"></label>
+            <textarea asp-for="Message" class="form-control" rows="3" placeholder="Say hello and explain why you'd be a good swap partner"></textarea>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Send Request</button>
+        <a asp-controller="Skills" asp-action="Details" asp-route-id="@Model.ReceiverSkillId" class="btn btn-link">Cancel</a>
+    </form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
