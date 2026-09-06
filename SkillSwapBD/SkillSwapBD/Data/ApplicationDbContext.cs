@@ -16,6 +16,7 @@ namespace SkillSwapBD.Data
         public DbSet<Review> Reviews { get; set; }
         public DbSet<SkillLike> SkillLikes { get; set; }
         public DbSet<SkillComment> SkillComments { get; set; }
+        public DbSet<CommentLike> CommentLikes { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -55,6 +56,12 @@ namespace SkillSwapBD.Data
                 .HasForeignKey(c => c.UserId).OnDelete(DeleteBehavior.Restrict);
             builder.Entity<SkillComment>().HasOne(c => c.ParentComment).WithMany(c => c.Replies)
                 .HasForeignKey(c => c.ParentCommentId).OnDelete(DeleteBehavior.Restrict);
+
+            builder.Entity<CommentLike>().HasOne(cl => cl.SkillComment).WithMany(c => c.Likes)
+    .           HasForeignKey(cl => cl.SkillCommentId).OnDelete(DeleteBehavior.Cascade);
+            builder.Entity<CommentLike>().HasOne(cl => cl.User).WithMany()
+                .HasForeignKey(cl => cl.UserId).OnDelete(DeleteBehavior.Restrict);
+            builder.Entity<CommentLike>().HasIndex(cl => new { cl.SkillCommentId, cl.UserId }).IsUnique();
 
             builder.Entity<Category>().HasData(
                 new Category { Id = 1, Name = "Programming & IT" },

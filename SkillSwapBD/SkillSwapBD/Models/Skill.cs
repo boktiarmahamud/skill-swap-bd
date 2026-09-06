@@ -12,7 +12,9 @@ namespace SkillSwapBD.Models
         public Category Category { get; set; }
         public string UserId { get; set; }
         public ApplicationUser User { get; set; }
-        public bool IsApproved { get; set; } = false;   
+        public bool IsApproved { get; set; } = false;
+        public string? AttachmentUrl { get; set; }      
+        public string? AttachmentType { get; set; }      
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
         public ICollection<SkillLike> Likes { get; set; } = new List<SkillLike>();

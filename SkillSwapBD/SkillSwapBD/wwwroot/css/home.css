@@ -1,0 +1,99 @@
+﻿.hero-section {
+    text-align: center;
+    padding: 3.5rem 1.5rem 3rem;
+    background: linear-gradient(135deg, rgba(79, 70, 229, 0.06), rgba(20, 184, 166, 0.06));
+    border-radius: 20px;
+    margin-bottom: 2.5rem;
+}
+
+.hero-title {
+    font-weight: 800;
+    font-size: 2.4rem;
+    background: linear-gradient(90deg, var(--ss-primary, #4F46E5), var(--ss-accent, #14B8A6));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    margin-bottom: 0.5rem;
+}
+
+.hero-subtitle {
+    color: #475569;
+    font-size: 1.05rem;
+    margin-bottom: 1.75rem;
+}
+
+.hero-actions {
+    display: flex;
+    justify-content: center;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    margin-bottom: 1.5rem;
+}
+
+.btn-hero-primary {
+    background: linear-gradient(90deg, var(--ss-primary, #4F46E5), var(--ss-accent, #14B8A6));
+    border: none;
+    color: #fff;
+    font-weight: 600;
+    border-radius: 8px;
+    padding: 0.7rem 1.6rem;
+    text-decoration: none;
+}
+
+    .btn-hero-primary:hover {
+        opacity: 0.9;
+        color: #fff;
+    }
+
+.btn-hero-secondary {
+    border: 1.5px solid var(--ss-primary, #4F46E5);
+    color: var(--ss-primary, #4F46E5);
+    background: #fff;
+    font-weight: 600;
+    border-radius: 8px;
+    padding: 0.7rem 1.6rem;
+    text-decoration: none;
+}
+
+    .btn-hero-secondary:hover {
+        background: var(--ss-primary, #4F46E5);
+        color: #fff;
+    }
+
+.hero-stats {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    flex-wrap: wrap;
+}
+
+.hero-stat {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    color: #64748B;
+    font-size: 0.9rem;
+}
+
+    .hero-stat strong {
+        color: #1E293B;
+        font-weight: 700;
+    }
+
+.section-label {
+    font-weight: 700;
+    color: #1E293B;
+    margin-bottom: 1.25rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.empty-browse-box {
+    text-align: center;
+    padding: 3rem 1.5rem;
+    border: 1.5px dashed #CBD5E1;
+    border-radius: 14px;
+    color: #94A3B8;
+    margin-top: 1rem;
+}

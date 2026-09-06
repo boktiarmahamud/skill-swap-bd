@@ -10,6 +10,9 @@
             <span class="nav-link text-dark">Hi, @UserManager.GetUserName(User)!</span>
         </li>
         <li class="nav-item">
+            <a class="nav-link text-dark" asp-controller="SwapRequests" asp-action="Index">Swap Requests</a>
+        </li>
+        <li class="nav-item">
             <a class="nav-link text-dark" asp-controller="Profile" asp-action="Index">My Profile</a>
         </li>
         @if (User.IsInRole("Admin"))

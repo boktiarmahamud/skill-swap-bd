@@ -20,6 +20,9 @@ namespace SkillSwapBD.ViewModels
         [Required]
         public int CategoryId { get; set; }
 
+        public IFormFile? Attachment { get; set; }         // ADD - optional
+        public string? ExistingAttachmentUrl { get; set; }  // ADD
+
         public List<Category> Categories { get; set; } = new();
     }
 }
