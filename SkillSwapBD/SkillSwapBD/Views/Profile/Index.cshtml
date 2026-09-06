@@ -70,8 +70,29 @@
                                 <span class="skill-badge @(skill.Type == SkillType.Offer ? "bg-success text-white" : "bg-warning text-dark")">
                                     @(skill.Type == SkillType.Offer ? "Offering" : "Wanted")
                                 </span>
-                                <strong class="skill-title">@skill.Title</strong>
+                                @if ((bool)ViewBag.IsOwnProfile)
+                                {
+                                    @if (skill.IsApproved)
+                                    {
+                                        <span class="badge bg-primary">Live</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-secondary">Pending Approval</span>
+                                    }
+                                }
+                                <a asp-controller="Skills" asp-action="Details" asp-route-id="@skill.Id" class="skill-title d-block text-decoration-none">
+                                    @skill.Title
+                                </a>
                                 <span class="skill-category">@skill.Category?.Name</span>
+
+                                @if ((bool)ViewBag.IsOwnProfile)
+                                {
+                                    <div class="d-flex gap-2 mt-2">
+                                        <a class="btn btn-sm btn-outline-secondary" asp-controller="Skills" asp-action="Edit" asp-route-id="@skill.Id">Edit</a>
+                                        <a class="btn btn-sm btn-outline-danger" asp-controller="Skills" asp-action="Delete" asp-route-id="@skill.Id">Delete</a>
+                                    </div>
+                                }
                             </div>
                         </div>
                     }
