@@ -1,0 +1,70 @@
+﻿@model List<SkillSwapBD.Models.ApplicationUser>
+@{
+    ViewData["Title"] = "All Users";
+    var skillCounts = (Dictionary<string, int>)ViewBag.SkillCounts;
+}
+
+<link rel="stylesheet" href="~/css/admin.css" asp-append-version="true" />
+
+<div class="container py-4">
+    <div class="admin-header">
+        <h1 class="admin-title h3 mb-0">All Users</h1>
+        <a asp-action="Index" class="btn-admin-outline">&larr; Back to Dashboard</a>
+    </div>
+
+    <form method="get" class="mb-3">
+        <input type="text" name="searchTerm" value="@ViewBag.SearchTerm" class="form-control admin-search" placeholder="🔍 Search by name or email..." />
+    </form>
+
+    <div class="admin-table-card">
+        <table class="admin-table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Status</th>
+                    <th>Skills Posted</th>
+                    <th>Joined</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var user in Model)
+                {
+                    <tr>
+                        <td>
+                            <a asp-controller="Profile" asp-action="Index" asp-route-id="@user.Id" class="text-decoration-none fw-semibold">
+                                @user.FullName
+                            </a>
+                        </td>
+                        <td>@user.Email</td>
+                        <td>
+                            @if (user.IsApproved)
+                            {
+                                <span class="status-pill bg-success text-white">Approved</span>
+                            }
+                            else if (user.IsRejected)
+                            {
+                                <span class="status-pill bg-danger text-white">Rejected</span>
+                            }
+                            else
+                            {
+                                <span class="status-pill bg-secondary text-white">Pending</span>
+                            }
+                        </td>
+                        <td>@(skillCounts.ContainsKey(user.Id) ? skillCounts[user.Id] : 0)</td>
+                        <td>@user.CreatedAt.ToString("MMM d, yyyy")</td>
+                        <td>
+                            <a class="btn-table-delete" asp-action="DeleteUser" asp-route-id="@user.Id">Delete</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    @if (!Model.Any())
+    {
+        <p class="text-muted mt-3">No users found.</p>
+    }
+</div>

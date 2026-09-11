@@ -1,0 +1,19 @@
+﻿@model SkillSwapBD.Models.Skill
+@{
+    ViewData["Title"] = "Delete Skill";
+}
+
+<link rel="stylesheet" href="~/css/admin.css" asp-append-version="true" />
+
+<div class="container py-4">
+    <div class="admin-confirm-card">
+        <h1 class="h4 text-danger mb-3">⚠️ Delete Skill Post</h1>
+        <p class="text-muted">Delete <strong>"@Model.Title"</strong> posted by @Model.User?.FullName?</p>
+        <p class="text-muted small">This removes the post along with its comments and likes. This action cannot be undone.</p>
+
+        <form asp-action="DeleteSkillAdmin" asp-route-id="@Model.Id" method="post" class="d-flex gap-3 mt-3">
+            <button type="submit" class="btn btn-danger">Yes, Delete</button>
+            <a asp-action="AllSkills" class="btn btn-link">Cancel</a>
+        </form>
+    </div>
+</div>

@@ -2,37 +2,71 @@
     ViewData["Title"] = "Admin Dashboard";
 }
 
+<link rel="stylesheet" href="~/css/admin.css" asp-append-version="true" />
+
 <div class="container py-4">
-    <h1 class="mb-4">Admin Dashboard</h1>
-    <div class="row g-3 mb-4">
-        <div class="col-md-3">
-            <div class="card p-3 text-center">
-                <h3>@ViewBag.UserCount</h3>
-                <p class="text-muted mb-0">Total Users</p>
+    <div class="admin-header">
+        <h1 class="admin-title h3 mb-0">Admin Dashboard</h1>
+    </div>
+
+    <div class="row g-3 mb-3">
+        <div class="col-md-3 col-6">
+            <div class="stat-card">
+                <div class="stat-value">@ViewBag.UserCount</div>
+                <div class="stat-label">Total Users</div>
             </div>
         </div>
-        <div class="col-md-3">
-            <div class="card p-3 text-center">
-                <h3>@ViewBag.SkillCount</h3>
-                <p class="text-muted mb-0">Skill Posts</p>
+        <div class="col-md-3 col-6">
+            <div class="stat-card">
+                <div class="stat-value">@ViewBag.SkillCount</div>
+                <div class="stat-label">Skill Posts</div>
             </div>
         </div>
-        <div class="col-md-3">
-            <div class="card p-3 text-center">
-                <h3>@ViewBag.PendingCount</h3>
-                <p class="text-muted mb-0">Pending User Approvals</p>
+        <div class="col-md-3 col-6">
+            <div class="stat-card">
+                <div class="stat-value">@ViewBag.PendingCount</div>
+                <div class="stat-label">Pending User Approvals</div>
             </div>
         </div>
-        <div class="col-md-3">
-            <div class="card p-3 text-center">
-                <h3>@ViewBag.PendingSkillCount</h3>
-                <p class="text-muted mb-0">Pending Skill Approvals</p>
+        <div class="col-md-3 col-6">
+            <div class="stat-card">
+                <div class="stat-value">@ViewBag.PendingSkillCount</div>
+                <div class="stat-label">Pending Skill Approvals</div>
             </div>
         </div>
     </div>
 
-    <div class="d-flex gap-2">
-        <a class="btn btn-primary" asp-action="PendingUsers">Review Pending Users</a>
-        <a class="btn btn-outline-primary" asp-action="PendingSkills">Review Pending Skills</a>
+    <div class="row g-3 mb-3">
+        <div class="col-md-3 col-6">
+            <div class="stat-card">
+                <div class="stat-value">@ViewBag.SwapRequestCount</div>
+                <div class="stat-label">Swap Requests</div>
+            </div>
+        </div>
+        <div class="col-md-3 col-6">
+            <div class="stat-card">
+                <div class="stat-value">@ViewBag.CompletedSwapCount</div>
+                <div class="stat-label">Completed Swaps</div>
+            </div>
+        </div>
+        <div class="col-md-3 col-6">
+            <div class="stat-card">
+                <div class="stat-value">@ViewBag.ReviewCount</div>
+                <div class="stat-label">Reviews Submitted</div>
+            </div>
+        </div>
+        <div class="col-md-3 col-6">
+            <div class="stat-card">
+                <div class="stat-value">⭐ @ViewBag.AverageRating</div>
+                <div class="stat-label">Platform Avg. Rating</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="admin-actions">
+        <a class="btn-admin-primary" asp-action="PendingUsers">Review Pending Users</a>
+        <a class="btn-admin-primary" asp-action="PendingSkills">Review Pending Skills</a>
+        <a class="btn-admin-outline" asp-action="AllUsers">Manage All Users</a>
+        <a class="btn-admin-outline" asp-action="AllSkills">Manage All Skills</a>
     </div>
 </div>

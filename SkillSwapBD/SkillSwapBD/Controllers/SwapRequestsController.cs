@@ -141,6 +141,7 @@ namespace SkillSwapBD.Controllers
         }
 
         // GET: /SwapRequests/Details/5
+        // GET: /SwapRequests/Details/5
         public async Task<IActionResult> Details(int id)
         {
             var userId = _userManager.GetUserId(User);
@@ -155,7 +156,63 @@ namespace SkillSwapBD.Controllers
             if (swap == null) return NotFound();
             if (swap.RequesterId != userId && swap.ReceiverId != userId) return Forbid();
 
+            if (swap.Status == SwapStatus.Completed)
+            {
+                ViewBag.HasReviewed = await _context.Reviews
+                    .AnyAsync(r => r.SwapRequestId == id && r.ReviewerId == userId);
+            }
+
             return View(swap);
+        }
+
+        // POST: /SwapRequests/AddReview
+        [HttpPost, ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddReview(ReviewFormViewModel vm)
+        {
+            var userId = _userManager.GetUserId(User);
+
+            var swap = await _context.SwapRequests.FindAsync(vm.SwapRequestId);
+            if (swap == null) return NotFound();
+
+            var isReceiver = swap.ReceiverId == userId;
+            var isRequester = swap.RequesterId == userId;
+            if (!isReceiver && !isRequester) return Forbid();
+
+            if (swap.Status != SwapStatus.Completed)
+            {
+                TempData["Error"] = "You can only review a completed swap.";
+                return RedirectToAction(nameof(Details), new { id = vm.SwapRequestId });
+            }
+
+            var alreadyReviewed = await _context.Reviews
+                .AnyAsync(r => r.SwapRequestId == vm.SwapRequestId && r.ReviewerId == userId);
+            if (alreadyReviewed)
+            {
+                TempData["Error"] = "You've already reviewed this swap.";
+                return RedirectToAction(nameof(Details), new { id = vm.SwapRequestId });
+            }
+
+            if (!ModelState.IsValid || vm.Rating < 1 || vm.Rating > 5)
+            {
+                TempData["Error"] = "Please select a valid rating (1–5 stars).";
+                return RedirectToAction(nameof(Details), new { id = vm.SwapRequestId });
+            }
+
+            var revieweeId = isRequester ? swap.ReceiverId : swap.RequesterId;
+
+            _context.Reviews.Add(new Review
+            {
+                SwapRequestId = vm.SwapRequestId,
+                ReviewerId = userId!,
+                RevieweeId = revieweeId,
+                Rating = vm.Rating,
+                Comment = vm.Comment,
+                CreatedAt = DateTime.UtcNow
+            });
+
+            await _context.SaveChangesAsync();
+            TempData["Success"] = "Review submitted. Thanks for the feedback!";
+            return RedirectToAction(nameof(Details), new { id = vm.SwapRequestId });
         }
 
         [HttpPost, ValidateAntiForgeryToken]

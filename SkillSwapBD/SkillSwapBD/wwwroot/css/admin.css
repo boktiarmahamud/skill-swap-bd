@@ -1,0 +1,145 @@
+﻿.admin-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.75rem;
+}
+
+.admin-title {
+    font-weight: 700;
+    color: #1E293B;
+}
+
+.stat-card {
+    background: #fff;
+    border: 1px solid #E2E8F0;
+    border-radius: 14px;
+    padding: 1.25rem;
+    text-align: center;
+    box-shadow: 0 4px 14px rgba(79, 70, 229, 0.06);
+}
+
+.stat-value {
+    font-weight: 800;
+    font-size: 1.8rem;
+    background: linear-gradient(90deg, var(--ss-primary, #4F46E5), var(--ss-accent, #14B8A6));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+.stat-label {
+    color: #64748B;
+    font-size: 0.85rem;
+    margin-top: 0.2rem;
+}
+
+.admin-actions {
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    margin-top: 1.5rem;
+}
+
+.btn-admin-primary {
+    background: linear-gradient(90deg, var(--ss-primary, #4F46E5), var(--ss-accent, #14B8A6));
+    border: none;
+    color: #fff;
+    font-weight: 600;
+    border-radius: 8px;
+    padding: 0.55rem 1.2rem;
+    text-decoration: none;
+}
+
+    .btn-admin-primary:hover {
+        opacity: 0.9;
+        color: #fff;
+    }
+
+.btn-admin-outline {
+    border: 1.5px solid var(--ss-primary, #4F46E5);
+    color: var(--ss-primary, #4F46E5);
+    background: #fff;
+    font-weight: 600;
+    border-radius: 8px;
+    padding: 0.55rem 1.2rem;
+    text-decoration: none;
+}
+
+    .btn-admin-outline:hover {
+        background: var(--ss-primary, #4F46E5);
+        color: #fff;
+    }
+
+.admin-table-card {
+    background: #fff;
+    border: 1px solid #E2E8F0;
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 4px 14px rgba(79, 70, 229, 0.06);
+}
+
+.admin-table {
+    width: 100%;
+    margin-bottom: 0;
+}
+
+    .admin-table thead {
+        background: #F8FAFC;
+    }
+
+    .admin-table th {
+        font-size: 0.78rem;
+        text-transform: uppercase;
+        letter-spacing: 0.03em;
+        color: #64748B;
+        font-weight: 700;
+        padding: 0.85rem 1rem;
+        border-bottom: 1px solid #E2E8F0;
+    }
+
+    .admin-table td {
+        padding: 0.85rem 1rem;
+        vertical-align: middle;
+        border-bottom: 1px solid #F1F5F9;
+        color: #334155;
+        font-size: 0.9rem;
+    }
+
+.admin-search {
+    max-width: 320px;
+    border-radius: 8px;
+}
+
+.btn-table-delete {
+    border: 1px solid #FCA5A5;
+    color: #DC2626;
+    background: #fff;
+    border-radius: 7px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    padding: 0.3rem 0.8rem;
+    text-decoration: none;
+}
+
+    .btn-table-delete:hover {
+        background: #DC2626;
+        color: #fff;
+    }
+
+.status-pill {
+    font-size: 0.72rem;
+    font-weight: 600;
+    padding: 0.25em 0.7em;
+    border-radius: 999px;
+}
+
+.admin-confirm-card {
+    max-width: 560px;
+    margin: 0 auto;
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(220, 38, 38, 0.12);
+    padding: 2rem;
+    border-top: 4px solid #DC2626;
+}

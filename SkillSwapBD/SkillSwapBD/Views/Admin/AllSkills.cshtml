@@ -1,0 +1,68 @@
+﻿@using static SkillSwapBD.Models.Enums
+@model List<SkillSwapBD.Models.Skill>
+@{
+    ViewData["Title"] = "All Skills";
+}
+
+<link rel="stylesheet" href="~/css/admin.css" asp-append-version="true" />
+
+<div class="container py-4">
+    <div class="admin-header">
+        <h1 class="admin-title h3 mb-0">All Skills</h1>
+        <a asp-action="Index" class="btn-admin-outline">&larr; Back to Dashboard</a>
+    </div>
+
+    <form method="get" class="mb-3">
+        <input type="text" name="searchTerm" value="@ViewBag.SearchTerm" class="form-control admin-search" placeholder="🔍 Search by title..." />
+    </form>
+
+    <div class="admin-table-card">
+        <table class="admin-table">
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Type</th>
+                    <th>Category</th>
+                    <th>Posted By</th>
+                    <th>Status</th>
+                    <th>Posted</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var skill in Model)
+                {
+                    <tr>
+                        <td>
+                            <a asp-controller="Skills" asp-action="Details" asp-route-id="@skill.Id" class="text-decoration-none fw-semibold">
+                                @skill.Title
+                            </a>
+                        </td>
+                        <td>@(skill.Type == SkillType.Offer ? "Offering" : "Wanted")</td>
+                        <td>@skill.Category?.Name</td>
+                        <td>@skill.User?.FullName</td>
+                        <td>
+                            @if (skill.IsApproved)
+                            {
+                                <span class="status-pill bg-success text-white">Live</span>
+                            }
+                            else
+                            {
+                                <span class="status-pill bg-secondary text-white">Pending</span>
+                            }
+                        </td>
+                        <td>@skill.CreatedAt.ToString("MMM d, yyyy")</td>
+                        <td>
+                            <a class="btn-table-delete" asp-action="DeleteSkillAdmin" asp-route-id="@skill.Id">Delete</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    @if (!Model.Any())
+    {
+        <p class="text-muted mt-3">No skills found.</p>
+    }
+</div>
