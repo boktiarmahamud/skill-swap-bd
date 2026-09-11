@@ -97,3 +97,204 @@
     color: #94A3B8;
     margin-top: 1rem;
 }
+/* ===== How It Works ===== */
+.how-it-works {
+    margin: 3rem 0;
+}
+
+.how-it-works-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+}
+
+@@media (max-width: 768px) {
+    .how-it-works-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.step-card {
+    background: #fff;
+    border: 1px solid #E2E8F0;
+    border-radius: 16px;
+    padding: 1.75rem 1.5rem;
+    text-align: center;
+    position: relative;
+}
+
+.step-number {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--ss-primary, #4F46E5), var(--ss-accent, #14B8A6));
+    color: #fff;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 0.9rem;
+}
+
+.step-title {
+    font-weight: 700;
+    color: #1E293B;
+    margin-bottom: 0.4rem;
+}
+
+.step-desc {
+    color: #64748B;
+    font-size: 0.88rem;
+    line-height: 1.5;
+}
+
+/* ===== Browse by Category ===== */
+.category-section {
+    margin: 3rem 0;
+}
+
+.category-chip-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+}
+
+.category-chip {
+    background: #fff;
+    border: 1px solid #E2E8F0;
+    border-radius: 999px;
+    padding: 0.6rem 1.25rem;
+    color: #334155;
+    font-weight: 600;
+    font-size: 0.88rem;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: all 0.15s ease;
+}
+
+    .category-chip:hover {
+        background: var(--ss-primary, #4F46E5);
+        border-color: var(--ss-primary, #4F46E5);
+        color: #fff;
+    }
+
+    .category-chip .chip-count {
+        background: #F1F5F9;
+        color: #64748B;
+        font-size: 0.75rem;
+        font-weight: 700;
+        padding: 0.1rem 0.5rem;
+        border-radius: 999px;
+    }
+
+    .category-chip:hover .chip-count {
+        background: rgba(255,255,255,0.25);
+        color: #fff;
+    }
+
+/* ===== Top Rated Members ===== */
+.top-rated-section {
+    margin: 3rem 0;
+}
+
+.top-rated-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.25rem;
+}
+
+@@media (max-width: 768px) {
+    .top-rated-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+.member-card {
+    background: #fff;
+    border: 1px solid #E2E8F0;
+    border-radius: 14px;
+    padding: 1.25rem;
+    text-align: center;
+    text-decoration: none;
+    transition: box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+    .member-card:hover {
+        box-shadow: 0 10px 24px rgba(79, 70, 229, 0.10);
+        transform: translateY(-3px);
+    }
+
+.member-avatar,
+.member-avatar-fallback {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin: 0 auto 0.6rem;
+}
+
+.member-avatar-fallback {
+    background: linear-gradient(135deg, var(--ss-primary, #4F46E5), var(--ss-accent, #14B8A6));
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 1.4rem;
+}
+
+.member-name {
+    font-weight: 700;
+    color: #1E293B;
+    font-size: 0.92rem;
+    margin-bottom: 0.15rem;
+}
+
+.member-rating {
+    color: #F59E0B;
+    font-size: 0.82rem;
+    font-weight: 600;
+}
+
+.member-review-count {
+    color: #94A3B8;
+    font-size: 0.75rem;
+}
+
+/* ===== Closing CTA ===== */
+.closing-cta {
+    text-align: center;
+    background: linear-gradient(135deg, var(--ss-primary, #4F46E5), var(--ss-accent, #14B8A6));
+    border-radius: 20px;
+    padding: 3rem 1.5rem;
+    margin: 3.5rem 0 1.5rem;
+}
+
+.closing-cta-title {
+    color: #fff;
+    font-weight: 800;
+    font-size: 1.6rem;
+    margin-bottom: 0.5rem;
+}
+
+.closing-cta-subtitle {
+    color: rgba(255,255,255,0.85);
+    margin-bottom: 1.5rem;
+}
+
+.btn-cta-white {
+    background: #fff;
+    color: var(--ss-primary, #4F46E5);
+    font-weight: 700;
+    border-radius: 8px;
+    padding: 0.7rem 1.8rem;
+    text-decoration: none;
+    display: inline-block;
+}
+
+    .btn-cta-white:hover {
+        opacity: 0.9;
+        color: var(--ss-primary, #4F46E5);
+    }

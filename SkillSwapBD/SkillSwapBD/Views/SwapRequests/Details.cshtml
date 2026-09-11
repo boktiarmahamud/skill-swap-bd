@@ -1,10 +1,13 @@
 ﻿@using SkillSwapBD.Models
+@using SkillSwapBD.ViewModels
 @using static SkillSwapBD.Models.Enums
 @model SwapRequest
 @{
     ViewData["Title"] = "Swap Request Details";
 }
 @inject Microsoft.AspNetCore.Identity.UserManager<ApplicationUser> UserManager
+
+<link rel="stylesheet" href="~/css/components.css" asp-append-version="true" />
 
 @{
     var myId = UserManager.GetUserId(User);
@@ -64,6 +67,47 @@
             <span class="text-success fw-bold align-self-center">✅ Swap completed</span>
         }
     </div>
+
+    @if (Model.Status == SwapStatus.Completed)
+    {
+        var revieweeName = isRequester ? Model.Receiver?.FullName : Model.Requester?.FullName;
+
+        if (ViewBag.HasReviewed == true)
+        {
+            <div class="already-reviewed-note">
+                ✅ You've already submitted a review for this swap. Thanks for the feedback!
+            </div>
+        }
+        else
+        {
+            <div class="review-box">
+                <p class="review-box-title mb-3">⭐ Rate your swap with @revieweeName</p>
+
+                <form asp-action="AddReview" method="post">
+                    <input type="hidden" name="SwapRequestId" value="@Model.Id" />
+
+                    <div class="star-rating">
+                        <input type="radio" id="star5" name="Rating" value="5" />
+                        <label for="star5">★</label>
+                        <input type="radio" id="star4" name="Rating" value="4" />
+                        <label for="star4">★</label>
+                        <input type="radio" id="star3" name="Rating" value="3" />
+                        <label for="star3">★</label>
+                        <input type="radio" id="star2" name="Rating" value="2" />
+                        <label for="star2">★</label>
+                        <input type="radio" id="star1" name="Rating" value="1" />
+                        <label for="star1">★</label>
+                    </div>
+
+                    <div class="mb-3">
+                        <textarea name="Comment" class="form-control" rows="3" placeholder="How was your experience? (optional)"></textarea>
+                    </div>
+
+                    <button type="submit" class="btn-submit-review">Submit Review</button>
+                </form>
+            </div>
+        }
+    }
 
     <a asp-action="Index" class="btn btn-link mt-3">&larr; Back to Swap Requests</a>
 </div>

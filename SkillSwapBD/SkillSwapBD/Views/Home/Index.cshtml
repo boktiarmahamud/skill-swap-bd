@@ -8,6 +8,8 @@
 <link rel="stylesheet" href="~/css/browse-skills.css" asp-append-version="true" />
 
 <div class="container py-4">
+
+    <!-- Hero -->
     <div class="hero-section">
         <h1 class="hero-title">Skill Swap BD</h1>
         <p class="hero-subtitle">Trade skills with others instead of paying money.</p>
@@ -21,12 +23,64 @@
         </div>
     </div>
 
+    <!-- How It Works -->
+    <div class="how-it-works">
+        <h4 class="section-label">🚀 How It Works</h4>
+        <div class="how-it-works-grid">
+            <div class="step-card">
+                <div class="step-number">1</div>
+                <div class="step-title">Post a Skill</div>
+                <p class="step-desc">Share something you can teach, or list a skill you're looking to learn.</p>
+            </div>
+            <div class="step-card">
+                <div class="step-number">2</div>
+                <div class="step-title">Request a Swap</div>
+                <p class="step-desc">Found a match? Offer one of your own skills in exchange — no money involved.</p>
+            </div>
+            <div class="step-card">
+                <div class="step-number">3</div>
+                <div class="step-title">Swap & Review</div>
+                <p class="step-desc">Complete the exchange, then rate each other to help build a trusted community.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Browse by Category -->
+    @{
+        var categories = ViewBag.Categories as IEnumerable<dynamic>;
+    }
+    @if (categories != null && categories.Any())
+    {
+        <div class="category-section">
+            <h4 class="section-label">📂 Browse by Category</h4>
+            <div class="category-chip-grid">
+                @foreach (var cat in categories)
+                {
+                    <a class="category-chip" asp-controller="Skills" asp-action="Index" asp-route-categoryId="@cat.Id">
+                        @cat.Name <span class="chip-count">@cat.SkillCount</span>
+                    </a>
+                }
+            </div>
+        </div>
+    }
+
+    <!-- Recently Posted -->
     <h4 class="section-label">✨ Recently Posted</h4>
     <div class="row g-4">
         @foreach (var skill in Model)
         {
             <div class="col-md-4">
                 <div class="browse-card">
+                    @if (!string.IsNullOrEmpty(skill.AttachmentUrl) && skill.AttachmentType == "image")
+                    {
+                        <img src="@skill.AttachmentUrl" class="browse-card-image" alt="@skill.Title" />
+                    }
+                    else
+                    {
+                        <div class="browse-card-image-placeholder">
+                            @(skill.Type == SkillType.Offer ? "🎓" : "🔍")
+                        </div>
+                    }
                     <div class="browse-card-body">
                         <span class="type-badge @(skill.Type == SkillType.Offer ? "bg-success text-white" : "bg-warning text-dark")">
                             @(skill.Type == SkillType.Offer ? "Offering" : "Wanted")
@@ -49,4 +103,41 @@
             <p class="mb-0">No skills posted yet — be the first!</p>
         </div>
     }
+
+    <!-- Top Rated Members -->
+    @{
+        var topRated = ViewBag.TopRatedMembers as IEnumerable<dynamic>;
+    }
+    @if (topRated != null && topRated.Any())
+    {
+        <div class="top-rated-section">
+            <h4 class="section-label">🏆 Top-Rated Members</h4>
+            <div class="top-rated-grid">
+                @foreach (var entry in topRated)
+                {
+                    <a class="member-card" asp-controller="Profile" asp-action="Index" asp-route-id="@entry.User.Id">
+                        @if (!string.IsNullOrEmpty(entry.User.ProfileImageUrl))
+                        {
+                            <img src="@entry.User.ProfileImageUrl" class="member-avatar" />
+                        }
+                        else
+                        {
+                            <div class="member-avatar-fallback">@entry.User.FullName.Substring(0, 1)</div>
+                        }
+                        <div class="member-name">@entry.User.FullName</div>
+                        <div class="member-rating">⭐ @Math.Round((double)entry.AverageRating, 1)</div>
+                        <div class="member-review-count">@entry.ReviewCount review@(entry.ReviewCount == 1 ? "" : "s")</div>
+                    </a>
+                }
+            </div>
+        </div>
+    }
+
+    <!-- Closing CTA -->
+    <div class="closing-cta">
+        <div class="closing-cta-title">Ready to swap your first skill?</div>
+        <p class="closing-cta-subtitle">Join a growing community trading knowledge instead of money.</p>
+        <a class="btn-cta-white" asp-controller="Account" asp-action="Register">Get Started — It's Free</a>
+    </div>
+
 </div>

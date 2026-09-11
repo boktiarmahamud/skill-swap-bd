@@ -125,3 +125,27 @@
     color: #94A3B8;
     margin-top: 1.5rem;
 }
+
+.browse-card-image {
+    width: 100%;
+    height: 160px;
+    object-fit: cover;
+    border-radius: 8px 8px 0 0;
+}
+
+.browse-card-image {
+    width: 100%;
+    height: 160px;
+    object-fit: cover;
+    display: block;
+}
+
+.browse-card-image-placeholder {
+    width: 100%;
+    height: 160px;
+    background: linear-gradient(135deg, var(--ss-primary, #4F46E5), var(--ss-accent, #14B8A6));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.4rem;
+}

@@ -172,3 +172,66 @@
         .current-file-box a:hover {
             text-decoration: underline;
         }
+
+.review-box {
+    background: #F0FDF4;
+    border: 1px solid #BBF7D0;
+    border-radius: 14px;
+    padding: 1.25rem;
+    margin-top: 1.5rem;
+}
+
+.review-box-title {
+    font-weight: 700;
+    color: #1E293B;
+    margin-bottom: 0.75rem;
+}
+
+.star-rating {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: flex-end;
+    gap: 0.15rem;
+    margin-bottom: 1rem;
+}
+
+    .star-rating input {
+        display: none;
+    }
+
+    .star-rating label {
+        font-size: 1.9rem;
+        color: #E2E8F0;
+        cursor: pointer;
+        transition: color 0.15s ease;
+    }
+
+        .star-rating input:checked ~ label,
+        .star-rating label:hover,
+        .star-rating label:hover ~ label {
+            color: #F59E0B;
+        }
+
+.btn-submit-review {
+    background: linear-gradient(90deg, var(--ss-primary, #4F46E5), var(--ss-accent, #14B8A6));
+    border: none;
+    color: #fff;
+    font-weight: 600;
+    border-radius: 8px;
+    padding: 0.5rem 1.3rem;
+}
+
+    .btn-submit-review:hover {
+        opacity: 0.9;
+        color: #fff;
+    }
+
+.already-reviewed-note {
+    background: #F8FAFC;
+    border: 1px solid #E2E8F0;
+    border-radius: 10px;
+    padding: 0.75rem 1rem;
+    color: #64748B;
+    font-size: 0.88rem;
+    margin-top: 1.5rem;
+}

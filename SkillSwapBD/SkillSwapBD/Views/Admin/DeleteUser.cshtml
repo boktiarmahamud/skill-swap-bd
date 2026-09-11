@@ -1,0 +1,24 @@
+﻿@model SkillSwapBD.Models.ApplicationUser
+@{
+    ViewData["Title"] = "Delete User";
+}
+
+<link rel="stylesheet" href="~/css/admin.css" asp-append-version="true" />
+
+<div class="container py-4">
+    <div class="admin-confirm-card">
+        <h1 class="h4 text-danger mb-3">⚠️ Delete User</h1>
+        <p class="text-muted">This will permanently delete <strong>@Model.FullName</strong> (@Model.Email) along with:</p>
+        <ul class="text-muted small">
+            <li>@ViewBag.SkillCount skill post(s)</li>
+            <li>@ViewBag.SwapRequestCount swap request(s) they're part of</li>
+            <li>Their comments, likes, and reviews</li>
+        </ul>
+        <p class="fw-bold text-danger">This action cannot be undone.</p>
+
+        <form asp-action="DeleteUser" asp-route-id="@Model.Id" method="post" class="d-flex gap-3 mt-3">
+            <button type="submit" class="btn btn-danger">Yes, Delete Permanently</button>
+            <a asp-action="AllUsers" class="btn btn-link">Cancel</a>
+        </form>
+    </div>
+</div>
