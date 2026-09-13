@@ -1,0 +1,52 @@
+﻿@{
+    ViewData["Title"] = "About Us";
+}
+
+<link rel="stylesheet" href="~/css/static-page.css" asp-append-version="true" />
+
+<div class="container py-4">
+    <div class="static-page">
+
+        <div class="about-hero">
+            <h1 class="about-hero-title">About SkillSwapBD</h1>
+            <p class="about-hero-text">We believe everyone has something valuable to teach, and something new to learn — without money getting in the way.</p>
+        </div>
+
+        <div class="value-grid">
+            <div class="value-card">
+                <div class="value-icon">🤝</div>
+                <div class="value-title">Skills, Not Cash</div>
+                <div class="value-desc">Trade what you know for what you want to learn — a fair exchange, not a transaction.</div>
+            </div>
+            <div class="value-card">
+                <div class="value-icon">🌏</div>
+                <div class="value-title">Built for Bangladesh</div>
+                <div class="value-desc">A community platform designed around local learners, freelancers, and hobbyists.</div>
+            </div>
+            <div class="value-card">
+                <div class="value-icon">⭐</div>
+                <div class="value-title">Trust Through Reviews</div>
+                <div class="value-desc">Every completed swap can be rated, helping the community stay honest and reliable.</div>
+            </div>
+        </div>
+
+        <div class="static-section">
+            <h2>💡 Our Story</h2>
+            <p>SkillSwapBD started with a simple idea: not everyone can afford tutoring, coaching, or professional services — but almost everyone knows something worth sharing. Whether it's guitar lessons, coding help, graphic design, or language practice, this platform exists to connect people who can trade knowledge directly.</p>
+        </div>
+
+        <div class="static-section">
+            <h2>🔍 How It Works</h2>
+            <p>Post a skill you can offer or one you're looking for, browse what others have posted, and send a swap request. Once a swap is accepted and completed, both people can leave a review — building a trusted, growing community over time.</p>
+        </div>
+
+        <div class="static-section">
+            <h2>✅ Safety & Moderation</h2>
+            <p>New accounts and skill posts are reviewed by our admin team before going live, helping keep the platform genuine and spam-free.</p>
+        </div>
+
+        <div class="text-center mt-4">
+            <a class="btn-hero-primary" asp-controller="Skills" asp-action="Index">Start Browsing Skills</a>
+        </div>
+    </div>
+</div>

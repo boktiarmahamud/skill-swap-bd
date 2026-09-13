@@ -78,5 +78,6 @@ namespace SkillSwapBD.Controllers
         }
 
         public IActionResult Privacy() => View();
+        public IActionResult About() => View();
     }
 }
