@@ -1,6 +1,51 @@
 ﻿@{
     ViewData["Title"] = "Privacy Policy";
 }
-<h1>@ViewData["Title"]</h1>
 
-<p>Use this page to detail your site's privacy policy.</p>
+<link rel="stylesheet" href="~/css/static-page.css" asp-append-version="true" />
+
+<div class="container py-4">
+    <div class="static-page">
+        <div class="static-page-header">
+            <h1 class="static-page-title h2">Privacy Policy</h1>
+            <p class="static-page-subtitle">How SkillSwapBD collects, uses, and protects your information.</p>
+            <p class="static-page-updated">Last updated: September 2026</p>
+        </div>
+
+        <div class="static-section">
+            <h2>📋 Information We Collect</h2>
+            <p>When you create an account, we collect your full name, email address, and password (securely hashed — we never store plain-text passwords). You may optionally provide a bio, location, and profile or cover photo.</p>
+            <p>When you use the platform, we store the skills you post, comments and likes you leave, swap requests you send or receive, and reviews you give or receive.</p>
+        </div>
+
+        <div class="static-section">
+            <h2>🎯 How We Use Your Information</h2>
+            <ul>
+                <li>To create and manage your account, including admin approval of new members</li>
+                <li>To display your profile, posted skills, and reviews to other users</li>
+                <li>To connect you with other members through swap requests</li>
+                <li>To maintain trust and safety across the platform (e.g. reviewing reported content)</li>
+            </ul>
+        </div>
+
+        <div class="static-section">
+            <h2>🔒 How We Protect Your Data</h2>
+            <p>Passwords are hashed using ASP.NET Core Identity's secure hashing algorithm and are never visible to anyone, including administrators. Uploaded files (profile photos, attachments) are stored securely and are only accessible via the links shown on the platform.</p>
+        </div>
+
+        <div class="static-section">
+            <h2>👥 Information Visible to Other Users</h2>
+            <p>Your full name, profile photo, bio, location, posted skills, and reviews are visible to other members and, where applicable, to the public. Your email address and password are never shown to other users.</p>
+        </div>
+
+        <div class="static-section">
+            <h2>🗑️ Data Retention & Deletion</h2>
+            <p>If you'd like your account and associated data removed, contact an administrator. Deleting an account permanently removes your posted skills, comments, and reviews tied to your profile.</p>
+        </div>
+
+        <div class="static-section">
+            <h2>📧 Contact</h2>
+            <p>Questions about this policy or your data? Reach out to the SkillSwapBD team through the platform's support channel.</p>
+        </div>
+    </div>
+</div>
